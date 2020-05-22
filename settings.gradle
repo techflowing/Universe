@@ -1,0 +1,11 @@
+rootProject.name = 'Universe'
+include ':app-sample'
+include ':m-sample'
+
+// Lego 组件
+include ':lego:m-runtime'
+include ':lego:m-splash'
+
+// Gradle 插件
+include ':gradle-plugin:p-base'
+include ':gradle-plugin:p-creation'

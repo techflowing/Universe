@@ -1,0 +1,72 @@
+/**
+ * 本地配置
+ */
+def properties = new Properties()
+def localFile = new File(rootProject.rootDir, "local.properties")
+if (localFile.canRead()) {
+    properties.load(localFile.newDataInputStream())
+}
+
+/**
+ * build参数定义
+ */
+def build = [
+        buildToolsVersion: build_tools_version,
+        compileSdkVersion: compile_sdk_version,
+        minSdkVersion    : min_sdk_verison,
+        targetSdkVersion : target_sdk_version
+]
+
+/**
+ * android 官方库
+ */
+def android = [
+        v4          : "com.android.support:support-v4:$android_support",
+        v7          : "com.android.support:appcompat-v7:$android_support",
+        recyclerview: "com.android.support:recyclerview-v7:$android_support",
+        gradle      : "com.android.tools.build:gradle:$gradle_version",
+        gradle_api  : "com.android.tools.build:gradle-api:$gradle_version",
+        builder     : "com.android.tools.build:builder:$gradle_version"
+]
+
+/**
+ * 三方工具库
+ */
+def third = [
+        javapoet : "com.squareup:javapoet:${javapoet_version}",
+        javassist: "javassist:javassist:${javassist_version}",
+        common_io: "commons-io:commons-io:2.4"
+]
+
+/**
+ * 注解处理器
+ */
+def processor = [
+
+]
+
+/**
+ * Gradle Plugin 插件
+ */
+def plugin = [
+
+]
+
+/**
+ * module 项目
+ */
+def module = [
+        runtime    : project(":lego:m-runtime"),
+        splash     : project(":lego:m-splash"),
+        plugin_base: project(":gradle-plugin:p-base")
+]
+
+ext.deps = [
+        "build"          : build,
+        "android"        : android,
+        "third"          : third,
+        "processor"      : processor,
+        "plugin"         : plugin,
+        "module"         : module,
+        "localProperties": properties
+]

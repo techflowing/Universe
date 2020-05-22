@@ -1,0 +1,14 @@
+apply from: rootProject.file('application.gradle')
+
+apply plugin: 'com.techflowing.android.creation'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation deps.android.v7
+    implementation deps.module.runtime
+    implementation deps.module.splash
+}
+
+creation {
+    enable = true
+}

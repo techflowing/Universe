@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-kapt"
+
+apply from: rootProject.file('dependencies.gradle')
+
+android {
+    compileSdkVersion deps.build.compileSdkVersion as int
+    buildToolsVersion deps.build.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion deps.build.minSdkVersion as int
+        targetSdkVersion deps.build.targetSdkVersion as int
+        versionName = "1.0"
+        versionCode = 1
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            multiDexEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFile rootProject.file('proguard-project-debug.txt')
+            proguardFile 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            multiDexEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFile rootProject.file('proguard-project-release.txt')
+            proguardFile 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
