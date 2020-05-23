@@ -1,7 +1,8 @@
-package win.techflowing.android
+package win.techflowing.android.sample
 
 import android.app.Application
 import android.content.Context
+import win.techflowing.android.BuildConfig
 import win.techflowing.android.runtime.AppRuntimeInit
 import win.techflowing.android.runtime.annotation.AppApplication
 

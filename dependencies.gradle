@@ -21,9 +21,10 @@ def build = [
  * android 官方库
  */
 def android = [
-        v4          : "com.android.support:support-v4:$android_support",
-        v7          : "com.android.support:appcompat-v7:$android_support",
-        recyclerview: "com.android.support:recyclerview-v7:$android_support",
+        v4          : "androidx.legacy:legacy-support-v4:$androidx_support_v4",
+        v7          : "androidx.appcompat:appcompat:$androidx_appcompat",
+        recyclerview: "androidx.recyclerview:recyclerview:$androidx_recyclerview",
+        annotation  : "androidx.annotation:annotation:$androidx_annotation",
         gradle      : "com.android.tools.build:gradle:$gradle_version",
         gradle_api  : "com.android.tools.build:gradle-api:$gradle_version",
         builder     : "com.android.tools.build:builder:$gradle_version"
@@ -33,16 +34,22 @@ def android = [
  * 三方工具库
  */
 def third = [
-        javapoet : "com.squareup:javapoet:${javapoet_version}",
-        javassist: "javassist:javassist:${javassist_version}",
-        common_io: "commons-io:commons-io:2.4"
+        butterknife   : "com.jakewharton:butterknife:$butterknife",
+        gson          : "com.google.code.gson:gson:$gson_version",
+        glide         : "com.github.bumptech.glide:glide:$glide_version",
+        indicator_view: "com.romandanylyk:pageindicatorview:$indicator_view_version",
+        agentweb      : "com.just.agentweb:agentweb:$agent_web_version",
+        javapoet      : "com.squareup:javapoet:$javapoet_version",
+        javassist     : "javassist:javassist:$javassist_version",
+        common_io     : "commons-io:commons-io:2.4"
 ]
 
 /**
  * 注解处理器
  */
 def processor = [
-
+        butterknife: "com.jakewharton:butterknife-compiler:$butterknife",
+        glide_apt  : "com.github.bumptech.glide:compiler:${glide_version}",
 ]
 
 /**
@@ -56,9 +63,20 @@ def plugin = [
  * module 项目
  */
 def module = [
-        runtime    : project(":lego:m-runtime"),
-        splash     : project(":lego:m-splash"),
-        plugin_base: project(":gradle-plugin:p-base")
+        lego  : [
+                runtime   : project(":lego:m-runtime"),
+                framework : project(":lego:m-framework"),
+                splash    : project(":lego:m-splash"),
+                cache     : project(":lego:m-cache"),
+                permission: project(":lego:m-permission"),
+                util      : project(":lego:m-util"),
+                scheme    : project(":lego:m-scheme"),
+                ui        : project(":lego:m-ui"),
+                webview   : project(":lego:m-webview"),
+        ],
+        plugin: [
+                base: project(":gradle-plugin:p-base")
+        ]
 ]
 
 ext.deps = [

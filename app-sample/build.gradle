@@ -5,8 +5,13 @@ apply plugin: 'com.techflowing.android.creation'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.android.v7
-    implementation deps.module.runtime
-    implementation deps.module.splash
+    implementation deps.android.recyclerview
+    implementation deps.third.butterknife
+    implementation deps.module.lego.runtime
+    implementation deps.module.lego.framework
+    implementation deps.module.lego.splash
+
+    kapt deps.processor.butterknife
 }
 
 creation {

@@ -1,10 +1,17 @@
 rootProject.name = 'Universe'
 include ':app-sample'
-include ':m-sample'
+// include ':m-sample'
 
 // Lego 组件
 include ':lego:m-runtime'
 include ':lego:m-splash'
+include ':lego:m-framework'
+include ':lego:m-cache'
+include ':lego:m-permission'
+include ':lego:m-util'
+include ':lego:m-scheme'
+include ':lego:m-ui'
+include ':lego:m-webview'
 
 // Gradle 插件
 include ':gradle-plugin:p-base'
