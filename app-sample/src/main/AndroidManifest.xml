@@ -17,5 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".sample.funsample.LoggerSampleActivity" />
+        <activity
+            android:name=".sample.test.FirstActivity"
+            android:launchMode="standard" />
+        <activity
+            android:name=".sample.test.SecondActivity"
+            android:launchMode="standard" />
     </application>
 </manifest>

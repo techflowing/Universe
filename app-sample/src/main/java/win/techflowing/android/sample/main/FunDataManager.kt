@@ -1,6 +1,7 @@
 package win.techflowing.android.sample.main
 
 import win.techflowing.android.sample.funsample.LoggerSampleActivity
+import win.techflowing.android.sample.test.FirstActivity
 
 /**
  * 首页功能示例列表数据管理类
@@ -15,6 +16,7 @@ class FunDataManager {
 
     init {
         mFunModelList.add(FunModel("Logger 日志库使用示例", LoggerSampleActivity::class.java))
+        mFunModelList.add(FunModel("Activity 生命周期测试", FirstActivity::class.java))
     }
 
     fun getFunModelList(): List<FunModel> {

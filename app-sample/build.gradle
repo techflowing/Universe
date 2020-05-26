@@ -6,6 +6,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.android.v7
     implementation deps.android.recyclerview
+    implementation deps.android.anko
     implementation deps.third.butterknife
     implementation deps.module.lego.runtime
     implementation deps.module.lego.framework

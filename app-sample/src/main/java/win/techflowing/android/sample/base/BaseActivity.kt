@@ -10,4 +10,13 @@ import win.techflowing.android.framework.activity.AbsActivity
  * @since 2020/5/23 7:58 PM
  */
 abstract class BaseActivity : AbsActivity() {
+
+    override fun initVariable() {
+
+    }
+
+    override fun initView() {
+
+    }
+
 }
