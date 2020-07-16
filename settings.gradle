@@ -12,6 +12,7 @@ include ':lego:m-util'
 include ':lego:m-scheme'
 include ':lego:m-ui'
 include ':lego:m-webview'
+include ':lego:m-jni-learning'
 
 // Gradle 插件
 include ':gradle-plugin:p-base'

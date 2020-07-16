@@ -11,6 +11,7 @@ dependencies {
     implementation deps.module.lego.runtime
     implementation deps.module.lego.framework
     implementation deps.module.lego.splash
+    implementation deps.module.lego.jni_learning
 
     kapt deps.processor.butterknife
 }

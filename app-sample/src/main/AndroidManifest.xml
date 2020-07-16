@@ -23,5 +23,6 @@
         <activity
             android:name=".sample.test.SecondActivity"
             android:launchMode="standard" />
+        <activity android:name=".sample.funsample.JniTestActivity" />
     </application>
 </manifest>

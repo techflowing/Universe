@@ -65,15 +65,16 @@ def plugin = [
  */
 def module = [
         lego  : [
-                runtime   : project(":lego:m-runtime"),
-                framework : project(":lego:m-framework"),
-                splash    : project(":lego:m-splash"),
-                cache     : project(":lego:m-cache"),
-                permission: project(":lego:m-permission"),
-                util      : project(":lego:m-util"),
-                scheme    : project(":lego:m-scheme"),
-                ui        : project(":lego:m-ui"),
-                webview   : project(":lego:m-webview"),
+                runtime     : project(":lego:m-runtime"),
+                framework   : project(":lego:m-framework"),
+                splash      : project(":lego:m-splash"),
+                cache       : project(":lego:m-cache"),
+                permission  : project(":lego:m-permission"),
+                util        : project(":lego:m-util"),
+                scheme      : project(":lego:m-scheme"),
+                ui          : project(":lego:m-ui"),
+                webview     : project(":lego:m-webview"),
+                jni_learning: project(":lego:m-jni-learning")
         ],
         plugin: [
                 base: project(":gradle-plugin:p-base")
