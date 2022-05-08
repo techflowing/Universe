@@ -1,11 +1,19 @@
 pluginManagement {
     repositories {
+        // Gradle 插件官方仓库 https://plugins.gradle.org/
         gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
+
+// 使用 Version Catalog 功能
+enableFeaturePreview('VERSION_CATALOGS')
+
 dependencyResolutionManagement {
+    // 改变依赖定义名称
+    defaultLibrariesExtensionName.set('deps')
+
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 /**
  * 功能说明
  *
- * @author yuanzeng@bytedance.com
+ * @author techflowing@gmail.com
  * @version 1.0.0
  * @since 2022/5/6 11:24 下午
  */
