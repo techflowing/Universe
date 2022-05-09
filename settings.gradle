@@ -7,9 +7,6 @@ pluginManagement {
     }
 }
 
-// 使用 Version Catalog 功能
-enableFeaturePreview('VERSION_CATALOGS')
-
 dependencyResolutionManagement {
     // 改变依赖定义名称
     defaultLibrariesExtensionName.set('deps')
@@ -21,7 +18,59 @@ dependencyResolutionManagement {
     }
 }
 
+// 使用 Version Catalog 功能
+enableFeaturePreview('VERSION_CATALOGS')
+
 apply from: "gradle/gradle-component-manager.gradle"
 
+
+/**
+ * 判断 Module 名字是否合法
+ * @param name Module 名字，前缀为 app-、module-、library 三种
+ */
+boolean legalModuleName(String name) {
+    if (name == null || name.isEmpty()) {
+        return false
+    }
+    return name == "app"
+            || name.startsWith("app-")
+            || name.startsWith("module-")
+            || name.startsWith("library-")
+}
+
+/**
+ * 自动遍历指定目录下所有的模块，并 include 进来，
+ * @param dir 文件夹
+ * @param name 父级 module 名称
+ */
+void traverseChild(File dir, String name) {
+    if (!dir.exists() || !dir.isDirectory()) {
+        return
+    }
+    name += ":" + dir.name
+    File buildGradleFile = new File(dir, "build.gradle")
+    // 当前文件夹是个模块
+    if (buildGradleFile.exists() && legalModuleName(dir.name)) {
+        include(name)
+        println("include module: " + name)
+        return
+    }
+    dir.eachDir {
+        traverseChild(it, name)
+    }
+}
+
+/**
+ * 自动 include 所有 module
+ */
+void includeModulesWithAuto() {
+    rootDir.eachDir {
+        // buildSrc 不能 include
+        if (it.name != "buildSrc") {
+            traverseChild(it, "")
+        }
+    }
+}
+
 rootProject.name = "Universe"
-include ':app'
+includeModulesWithAuto()
