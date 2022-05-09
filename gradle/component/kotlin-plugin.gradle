@@ -1,0 +1,9 @@
+project.buildscript.dependencies.with {
+
+}
+
+project.ext.gradleComponents.put("kotlin", { project ->
+    project.with {
+        apply plugin: 'org.jetbrains.kotlin.android'
+    }
+})

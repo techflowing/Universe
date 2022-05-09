@@ -1,0 +1,70 @@
+import org.codehaus.groovy.runtime.DefaultGroovyMethods
+
+/**
+ * Gradle 管理框架，可以将每一个 gradle plugin/task 的配置单独写在一个文件内，清晰明了
+ *
+ * 规范：
+ * 1. 每个组件脚本文件名前缀最好与文件内定义的task id一致，比如：android-plugin.gradle内定义的task id为android
+ */
+gradle.projectsLoaded { gradle ->
+    gradle.rootProject.ext.with {
+        gradleComponents = [:]
+    }
+}
+
+/**
+ * 遍历gradle/component目录，针对项目根 Project 把所有gradle文件都执行一遍，
+ * 例如会有 classpath 的添加等逻辑
+ */
+gradle.beforeProject { project ->
+    // 只对 rootProject 执行
+    if (project == project.rootProject) {
+        def componentDir = file(rootDir.absolutePath + File.separator + "gradle/component")
+        if (componentDir.exists()) {
+            componentDir.listFiles().each { gradleFile ->
+                project.with {
+                    println("apply component script: " + gradleFile.absolutePath)
+                    apply from: gradleFile.absolutePath
+                }
+            }
+        }
+    }
+
+    project.ext {
+        pluginsx = this.&pluginsx
+    }
+}
+
+/**
+ * 定义 pluginsx DSL解析
+ */
+class PluginsX {
+
+    /**维护引用的 plugin Component id*/
+    LinkedHashSet<String> ids = new LinkedHashSet<>()
+
+    void id(String id) {
+        ids.add(id)
+    }
+}
+
+/**
+ * 定义 pluginsx
+ */
+def pluginsx(@DelegatesTo(PluginsX.class) Closure<PluginsX> closure) {
+    def project = closure.owner
+    // 定义 pluginsx DSL 的解析
+    def pluginsx = new PluginsX()
+    DefaultGroovyMethods.with(pluginsx, closure)
+    
+    project.rootProject.ext.gradleComponents.each { entry ->
+        if (pluginsx.ids.contains(entry.key)) {
+            println("apply gradle component: " + entry.key)
+            entry.value(project)
+            pluginsx.ids.remove(entry.key)
+        }
+    }
+    if (pluginsx.ids.size() != 0) {
+        throw new GradleScriptException("pluginsx can not find task id for: " + pluginsx.ids, null)
+    }
+}

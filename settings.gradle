@@ -20,5 +20,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+apply from: "gradle/gradle-component-manager.gradle"
+
 rootProject.name = "Universe"
 include ':app'
