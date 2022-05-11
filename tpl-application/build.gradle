@@ -1,0 +1,13 @@
+apply from: rootProject.file("gradle/template/application.gradle")
+
+android {
+    defaultConfig {
+        applicationId "win.techflowing.android"
+    }
+}
+
+dependencies {
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.ktx.core
+    implementation deps.google.material
+}

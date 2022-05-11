@@ -26,7 +26,7 @@ apply from: "gradle/gradle-component-manager.gradle"
 
 /**
  * 判断 Module 名字是否合法
- * @param name Module 名字，前缀为 app-、module-、library 三种
+ * @param name Module 名字，前缀为 app-、module-、library- 三种
  */
 boolean legalModuleName(String name) {
     if (name == null || name.isEmpty()) {

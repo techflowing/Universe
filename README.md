@@ -32,8 +32,13 @@
 * module，表示一些具有业务逻辑的功能模块
 * library，表示一些功能模块、工具之类的封装，业务无关性
 
+### 新建模块
+
+直接复制 tpl-library、tpl-application 文件夹，同时改名符合要求即可，前缀为 app-、module-、library- 之一
+
 
 ## 相关引用
 
 * [Kotlin 编码规范](https://www.kotlincn.net/docs/reference/coding-conventions.html)
 * [Android KTX](https://developer.android.com/kotlin/ktx?hl=zh-cn)
+* [配色方案](https://www.materialpalette.com/blue/cyan)

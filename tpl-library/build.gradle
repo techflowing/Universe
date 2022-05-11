@@ -1,0 +1,7 @@
+apply from: rootProject.file("gradle/template/library.gradle")
+
+dependencies {
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.ktx.core
+    implementation deps.google.material
+}
