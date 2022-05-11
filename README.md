@@ -34,7 +34,10 @@
 
 ### 新建模块
 
-直接复制 tpl-library、tpl-application 文件夹，同时改名符合要求即可，前缀为 app-、module-、library- 之一
+1. 直接复制 tpl-library、tpl-application 文件夹，同时改名符合要求即可，前缀为 app-、module-、library- 之一
+2. 修改根包名，前缀统一是：win.techflowing.android
+3. 修改 AndroidManifest.xml 文件内的 package，和根包名保持一致
+4. sync 项目，会自动 include project
 
 
 ## 相关引用
