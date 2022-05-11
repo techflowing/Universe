@@ -1,0 +1,54 @@
+pluginsx {
+    id 'android'
+    id 'kotlin'
+}
+
+android {
+    compileSdk deps.versions.compileSdk.get().toInteger()
+
+    defaultConfig {
+        minSdk deps.versions.minSdk.get().toInteger()
+        targetSdk deps.versions.targetSdk.get().toInteger()
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        sign {
+            keyAlias "keystore"
+            keyPassword "123456"
+            storeFile file(rootDir.absolutePath + File.separator + "default.keystore")
+            storePassword "123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            multiDexEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFile rootProject.file('proguard-project-debug.txt')
+            proguardFile 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+        }
+        release {
+            minifyEnabled true
+            multiDexEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFile rootProject.file('proguard-project-release.txt')
+            proguardFile 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}

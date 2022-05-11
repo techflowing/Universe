@@ -1,0 +1,5 @@
+project.ext.gradleComponents.put("library", { project ->
+    project.with {
+        apply plugin: 'com.android.library'
+    }
+})

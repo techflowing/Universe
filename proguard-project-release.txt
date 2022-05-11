@@ -1,0 +1,20 @@
+#代码混淆的压缩比例，值在0-7之间
+-optimizationpasses 5
+#混淆后类名都为小写
+-dontusemixedcaseclassnames
+#指定不去忽略非公共的库的类
+-dontskipnonpubliclibraryclasses
+#指定不去忽略非公共的库的类的成员
+-dontskipnonpubliclibraryclassmembers
+#不做预校验的操作
+-dontpreverify
+#生成原类名和混淆后的类名的映射文件
+-verbose
+#-printmapping proguardMapping.txt
+#指定混淆是采用的算法
+-optimizations !code/simplification/cast,!field/*,!class/merging/*
+#不混淆Annotation
+-keepattributes *Annotation*,InnerClasses
+#不混淆泛型
+-keepattributes Signature
+#抛出异常时保留代码行号

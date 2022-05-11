@@ -1,0 +1,8 @@
+-ignorewarnings
+-keepattributes *Annotation*
+-keepattributes InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+
+# 添加一些通用的混淆规则

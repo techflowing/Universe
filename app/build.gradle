@@ -1,43 +1,13 @@
-pluginsx {
-    id 'android'
-    id 'kotlin'
-}
+apply from: rootProject.file("gradle/template/application.gradle")
 
 android {
-    compileSdk deps.versions.compileSdk.get().toInteger()
-
     defaultConfig {
         applicationId "win.techflowing.android"
-        minSdk deps.versions.minSdk.get().toInteger()
-        targetSdk deps.versions.targetSdk.get().toInteger()
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 }
 
 dependencies {
-
-    implementation deps.androidx.ktx.core
     implementation deps.androidx.appcompat
+    implementation deps.androidx.ktx.core
     implementation deps.google.material
-
-    testImplementation deps.test.junit
-    androidTestImplementation deps.test.androidx.junit
-    androidTestImplementation deps.test.androidx.espresso
 }
