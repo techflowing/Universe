@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 enableFeaturePreview('VERSION_CATALOGS')
 
 apply from: "gradle/gradle-component-manager.gradle"
-
+apply from: "gradle/config/local-properties.gradle"
 
 /**
  * 判断 Module 名字是否合法

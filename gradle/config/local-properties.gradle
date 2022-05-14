@@ -1,0 +1,65 @@
+// 之前 local.properties 读取是在 buildSrc 模块里，
+// 但是每次修改 local.properties 都需要 clean 或者 stop 才生效，
+// 所以才在此处读取
+
+/**
+ * 配置项声明
+ */
+ext {
+    // Boolean 类型配置
+    booleanConfigList = ["singleApplication"]
+    // String 类型配置
+    stringConfigList = []
+}
+
+/**
+ * 读取本地 local.properties 文件
+ */
+static Properties readLocalProp() {
+    Properties properties = new Properties()
+    File localFile = new File("local.properties")
+    if (localFile.canRead()) {
+        properties.load(new FileInputStream(localFile))
+    }
+    return properties
+}
+
+/**
+ * 读取 boolean 类型的配置
+ * @param key 配置名称
+ */
+static boolean readBoolConfig(Properties properties, String key) {
+    String value = readConfig(properties, key)
+    if (value == null) {
+        return false
+    }
+    return Boolean.parseBoolean(value)
+}
+
+/**
+ * 读取配置
+ * @param key 配置名称
+ */
+static String readConfig(Properties properties, String key) {
+    return properties[key]
+}
+
+/**
+ * 构建本地配置 Map
+ */
+static Map buildLocalConfigMap(List booleanConfigList, List stringConfigList) {
+    Properties properties = readLocalProp()
+    Map result = new HashMap()
+    booleanConfigList.forEach { item ->
+        result.put(item, readBoolConfig(properties, item))
+    }
+    stringConfigList.forEach { item ->
+        result.put(item, readConfig(properties, item))
+    }
+    return result
+}
+
+/**
+ * 对外暴露配置
+ */
+ext.LocalProperties = buildLocalConfigMap(booleanConfigList, stringConfigList)
