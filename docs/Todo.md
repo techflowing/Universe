@@ -1,0 +1,1 @@
+* app- 多模块，支持 application 和 library 切换，然后使用一个壳工程来包含所有模块主入口

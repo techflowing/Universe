@@ -3,6 +3,7 @@
 targetSdk = '31'
 compileSdk = '31'
 minSdk = '21'
+ndkVersion = '21.1.6352462'
 
 # 组件依赖定义
 [libraries]

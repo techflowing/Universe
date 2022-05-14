@@ -38,6 +38,7 @@
 2. 修改根包名，前缀统一是：win.techflowing.android
 3. 修改 AndroidManifest.xml 文件内的 package，和根包名保持一致
 4. sync 项目，会自动 include project
+5. 每个 module 都在 README.md 中写明模块作用等说明
 
 
 ## 相关引用

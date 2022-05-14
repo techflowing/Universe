@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--基础颜色统一定义-->
+    <color name="primary">#1e88e5</color>
+    <color name="primary_dark">#1976d2</color>
+    <color name="primary_light">#2196f3</color>
+    <color name="second">#4dd0e1</color>
+    <color name="second_dark">#26c6da</color>
+    <color name="second_light">#80deea</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="white">#FFFFFF</color>
+</resources>

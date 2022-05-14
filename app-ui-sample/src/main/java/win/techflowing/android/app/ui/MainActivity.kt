@@ -1,7 +1,8 @@
-package win.techflowing.android
+package win.techflowing.android.app.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import win.techflowing.android.R
 
 /**
  * 首页

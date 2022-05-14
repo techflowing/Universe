@@ -5,6 +5,7 @@ pluginsx {
 
 android {
     compileSdk deps.versions.compileSdk.get().toInteger()
+    ndkVersion = deps.versions.ndkVersion
 
     defaultConfig {
         minSdk deps.versions.minSdk.get().toInteger()
