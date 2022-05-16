@@ -1,10 +1,4 @@
-apply from: rootProject.file("gradle/template/application.gradle")
-
-android {
-    defaultConfig {
-        applicationId "win.techflowing.android"
-    }
-}
+apply from: rootProject.file("gradle/template/dynamic-application.gradle")
 
 dependencies {
     implementation deps.androidx.appcompat

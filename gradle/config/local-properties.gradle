@@ -62,4 +62,4 @@ static Map buildLocalConfigMap(List booleanConfigList, List stringConfigList) {
 /**
  * 对外暴露配置
  */
-ext.LocalProperties = buildLocalConfigMap(booleanConfigList, stringConfigList)
+ext.LocalPropertiesConfig = buildLocalConfigMap(booleanConfigList, stringConfigList)

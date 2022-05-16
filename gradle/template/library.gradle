@@ -29,4 +29,8 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+
+    lintOptions {
+        disable 'ExtraTranslation'
+    }
 }

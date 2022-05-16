@@ -2,7 +2,6 @@ package win.techflowing.android.app.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import win.techflowing.android.R
 
 /**
  * 首页
@@ -11,10 +10,10 @@ import win.techflowing.android.R
  * @version 1.0.0
  * @since 2022/5/6 11:24 下午
  */
-class MainActivity : AppCompatActivity() {
+class UIMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_ui_main)
     }
 }

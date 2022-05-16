@@ -1,0 +1,7 @@
+// 针对动态 application 模块，在组合编译时，动态处理 Manifest 文件文件，针对 LAUNCHER 的 intent-filter 节点添加 remove 属性
+
+project.ext.gradleComponents.put("remove-launcher", { project ->
+    project.with {
+        
+    }
+})

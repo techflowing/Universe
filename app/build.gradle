@@ -10,4 +10,10 @@ dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.ktx.core
     implementation deps.google.material
+
+    // application 模块依赖
+    implementation project(":app-ui-sample")
+
+    // 其它模块依赖
+    implementation project(":library-ui")
 }

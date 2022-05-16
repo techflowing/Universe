@@ -5,6 +5,12 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.5.30' apply false
 }
 
+apply from: rootProject.file("gradle/config/local-properties.gradle")
+
+ext {
+    LocalConfig = LocalPropertiesConfig
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

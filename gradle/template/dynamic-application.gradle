@@ -1,0 +1,9 @@
+if (LocalConfig.singleApplication) {
+    apply from: rootProject.file("gradle/template/application.gradle")
+} else {
+    apply from: rootProject.file("gradle/template/library.gradle")
+
+    pluginsx {
+        id 'remove-launcher'
+    }
+}

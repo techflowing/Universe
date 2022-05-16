@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Universe</string>
-    <string name="hello_world">UI 示例</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="app_name_ui">UI 示例</string>
 </resources>
