@@ -1,7 +1,53 @@
-// 针对动态 application 模块，在组合编译时，动态处理 Manifest 文件文件，针对 LAUNCHER 的 intent-filter 节点添加 remove 属性
+// 针对动态 application 模块，在组合编译时，动态处理 Manifest 文件文件，
+// 针对配置 LAUNCHER & MAIN 的 intent-filter 节点添加 remove 属性
+
+
+import groovy.xml.Namespace
+import groovy.xml.XmlParser
+import groovy.xml.XmlUtil
 
 project.ext.gradleComponents.put("remove-launcher", { project ->
     project.with {
-        
+        println("yuanzeng，开始处理")
+        project.afterEvaluate {
+            android.libraryVariants.all { variant ->
+                def variantName = variant.name.capitalize()
+                println(variantName)
+                def processManifestTask = project.tasks.getByName("process${variantName}Manifest")
+                processManifestTask.doLast { action ->
+                    def manifestFile = action.manifestOutputFile.getAsFile().get()
+                    if (!manifestFile.exists()) {
+                        return
+                    }
+                    def rewrite = false
+                    def xmlParse = new XmlParser()
+                    // 声明命名空间
+                    def android = new Namespace('http://schemas.android.com/apk/res/android', 'android')
+                    def tools = new Namespace('http://schemas.android.com/tools', 'tools')
+                    def xml = xmlParse.parseText(manifestFile.getText())
+                    xml.application.activity.each { activity ->
+                        activity.'intent-filter'.each { filter ->
+                            if (filter.category == null) {
+                                return
+                            }
+                            filter.category.each { category ->
+                                if (category.attribute(android.name) == 'android.intent.category.LAUNCHER') {
+                                    println("找到了需要添加 remove 属性的 intent-filter 节点 Activity：" + activity.attribute(android.name))
+                                    filter.attributes().put(tools.node, 'remove')
+                                    rewrite = true
+                                    return
+                                }
+                            }
+                        }
+                    }
+                    // 回写结果
+                    if (rewrite) {
+                        def serialize = XmlUtil.serialize(xml)
+                        manifestFile.write(serialize)
+                        println("回写 Manifest 文件完成: " + manifestFile)
+                    }
+                }
+            }
+        }
     }
 })
