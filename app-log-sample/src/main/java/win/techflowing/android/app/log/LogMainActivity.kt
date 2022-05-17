@@ -1,4 +1,4 @@
-package win.techflowing.android.app
+package win.techflowing.android.app.log
 
 import android.os.Bundle
 import win.techflowing.android.base.BaseActivity
@@ -10,9 +10,10 @@ import win.techflowing.android.base.BaseActivity
  * @version 1.0.0
  * @since 2022/5/6 11:24 下午
  */
-class MainActivity : BaseActivity() {
+class LogMainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_log_sample_main)
     }
 }

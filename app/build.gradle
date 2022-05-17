@@ -13,6 +13,7 @@ dependencies {
 
     // application 模块依赖
     implementation project(":app-ui-sample")
+    implementation project(":app-log-sample")
 
     // 其它模块依赖
     implementation project(":library-ui")

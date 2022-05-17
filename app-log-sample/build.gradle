@@ -6,4 +6,6 @@ dependencies {
     implementation deps.google.material
 
     implementation project(":module-base")
+    implementation project(":library-ui")
+    implementation project(":library-log")
 }
