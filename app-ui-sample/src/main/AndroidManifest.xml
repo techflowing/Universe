@@ -23,7 +23,7 @@
 
             <meta-data
                 android:name="win.techflowing.android.app.ui.UIMainActivity_icon"
-                android:resource="@drawable/ic_launcher" />
+                android:resource="@drawable/ic_ui_item_application" />
         </activity>
     </application>
 
