@@ -9,5 +9,5 @@ import androidx.appcompat.app.AppCompatActivity
  * @version 1.0.0
  * @since 2022/5/14 10:55 下午
  */
-class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 }

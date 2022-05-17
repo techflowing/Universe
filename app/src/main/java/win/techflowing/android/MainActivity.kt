@@ -3,16 +3,17 @@ package win.techflowing.android
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import win.techflowing.android.base.BaseActivity
 
 /**
  * 首页，提供所有功能模块的入口
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @version 1.0.0
  * @since 2022/5/6 11:24 下午
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     companion object {
         const val ACTION = "win.techflowing.android.app"
@@ -33,7 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.list_application_sample)
         recyclerView.adapter = RecyclerViewAdapter(queryApplicationSampleList())
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        recyclerView.addItemDecoration(RecyclerViewGridDivider(40))
     }
 
     /**
@@ -56,6 +58,29 @@ class MainActivity : AppCompatActivity() {
             list.add(ItemData(it.activityInfo.name, title, icon))
         }
         return list
+    }
+
+    /**
+     * 网格布局分隔线
+     * @property space Item 间距
+     */
+    inner class RecyclerViewGridDivider(private val space: Int) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            val manager = parent.layoutManager as GridLayoutManager
+            val spanCount = manager.spanCount
+            val itemPosition = parent.getChildAdapterPosition(view)
+
+            // 注意位于中间的 Item，左右都设置间距，两个加一起才是 space
+            val halfSpace = space / 2
+            if (itemPosition % spanCount == 0) { // 行首位
+                outRect.set(space, space, halfSpace, 0)
+            } else if (itemPosition % spanCount == spanCount - 1) { // 行末位
+                outRect.set(halfSpace, space, space, 0)
+            } else {
+                outRect.set(halfSpace, space, halfSpace, 0)
+            }
+        }
     }
 
     /**
@@ -88,8 +113,8 @@ class MainActivity : AppCompatActivity() {
      */
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val recyclerViewItem: LinearLayout by lazy {
-            itemView.findViewById<LinearLayout>(R.id.recycler_view_item)
+        val recyclerViewItem: RelativeLayout by lazy {
+            itemView.findViewById<RelativeLayout>(R.id.recycler_view_item)
         }
 
         val title: AppCompatTextView by lazy {

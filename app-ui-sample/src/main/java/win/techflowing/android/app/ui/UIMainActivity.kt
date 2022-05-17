@@ -1,7 +1,7 @@
 package win.techflowing.android.app.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import win.techflowing.android.base.BaseActivity
 
 /**
  * 首页
@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
  * @version 1.0.0
  * @since 2022/5/6 11:24 下午
  */
-class UIMainActivity : AppCompatActivity() {
+class UIMainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

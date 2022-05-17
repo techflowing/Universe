@@ -16,4 +16,5 @@ dependencies {
 
     // 其它模块依赖
     implementation project(":library-ui")
+    implementation project(":module-base")
 }
