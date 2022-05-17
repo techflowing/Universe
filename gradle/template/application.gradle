@@ -1,3 +1,5 @@
+apply from: rootProject.file("gradle/config/version-config.gradle")
+
 pluginsx {
     id 'android'
     id 'kotlin'
@@ -10,8 +12,8 @@ android {
     defaultConfig {
         minSdk deps.versions.minSdk.get().toInteger()
         targetSdk deps.versions.targetSdk.get().toInteger()
-        versionCode 1
-        versionName "1.0"
+        versionCode generateVersionCode()
+        versionName generateVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

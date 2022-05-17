@@ -1,0 +1,29 @@
+import java.text.SimpleDateFormat
+
+// 版本信息配置，取当前时间，精确到小时
+// VersionName: 22.05.17.23
+// VersionCode: 22051723
+
+
+/**
+ * 获取格式化的时间
+ * @param pattern 格式化样式
+ * @return
+ */
+static String getFormatTime(String pattern) {
+    SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.getDefault())
+    return formatter.format(new Date())
+}
+
+static int getVersionCode() {
+    return Integer.valueOf(getFormatTime("yyMMddHH"))
+}
+
+static String getVersionName() {
+    return getFormatTime("yy.MM.dd.HH")
+}
+
+ext {
+    generateVersionCode = this.&getVersionCode
+    generateVersionName = this.&getVersionName
+}
