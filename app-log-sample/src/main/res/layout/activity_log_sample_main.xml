@@ -1,11 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log示例" />
+    <Button
+        android:id="@+id/test_normal"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="测试常规日志" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/test_normal_error"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="4dp"
+        android:text="测试 Error 级别日志" />
+
+    <Button
+        android:id="@+id/test_map"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="4dp"
+        android:text="测试 Map 对象" />
+
+    <Button
+        android:id="@+id/test_intent"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="4dp"
+        android:text="测试 Intent 数据" />
+
+    <Button
+        android:id="@+id/test_json"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="4dp"
+        android:text="测试 JSON 数据" />
+
+    <Button
+        android:id="@+id/test_xml"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="4dp"
+        android:text="测试 XML 数据" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:background="@color/primary_text" />
+
+</LinearLayout>

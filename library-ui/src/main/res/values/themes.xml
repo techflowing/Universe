@@ -14,4 +14,16 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/bg_activity</item>
     </style>
+
+    <style name="Theme.Universe.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="background">@drawable/bg_button_list</item>
+    </style>
+
+    <style name="Theme.Universe.Button.List">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+    </style>
 </resources>

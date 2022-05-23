@@ -30,5 +30,28 @@ class LogLevel {
 
         /** Log level for XLog#init, printing all logs. */
         const val ALL = Int.MIN_VALUE
+
+        /**
+         * Get a short name representing the specified log level.
+         *
+         * @param logLevel the log level to get short name for
+         * @return the short name
+         */
+        fun getShortLevelName(logLevel: Int): String {
+            val levelName: String = when (logLevel) {
+                VERBOSE -> "V"
+                DEBUG -> "D"
+                INFO -> "I"
+                WARN -> "W"
+                ERROR -> "E"
+                ASSERT -> "S"
+                else -> if (logLevel < VERBOSE) {
+                    "V-" + (VERBOSE - logLevel)
+                } else {
+                    "E+" + (logLevel - ERROR)
+                }
+            }
+            return levelName
+        }
     }
 }

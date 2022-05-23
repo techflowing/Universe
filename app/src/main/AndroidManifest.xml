@@ -11,7 +11,7 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Universe"
-        tools:replace="android:label">
+        tools:replace="android:label,android:name">
         <activity
             android:name=".MainActivity"
             android:exported="true">

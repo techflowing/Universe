@@ -12,5 +12,6 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="bg_activity">#F2F3F8</color>
 </resources>
