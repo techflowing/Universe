@@ -4,11 +4,11 @@
 
 创建时间：2022年05月07日，使用的版本情况如下：
 
-* Gradle 版本：7.2
-* AGP 版本：7.1.2
-* Kotlin 版本：1.5.30
+* Gradle 版本：7.3.3
+* AGP 版本：7.2.0
+* Kotlin 版本：1.6.21
 * Java 版本：8 & 11
-* Android SDK：31
+* Android SDK：32
 
 其它原则：
 1. 优先使用 Kotlin 编码
