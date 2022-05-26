@@ -1,8 +1,8 @@
 apply from: rootProject.file("gradle/config/version-config.gradle")
 
 pluginsx {
-    id 'android'
-    id 'kotlin'
+    id 'android.application'
+    id 'kotlin.android'
 }
 
 android {

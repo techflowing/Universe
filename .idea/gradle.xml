@@ -19,6 +19,8 @@
             <option value="$PROJECT_DIR$/library-ui" />
             <option value="$PROJECT_DIR$/library-util" />
             <option value="$PROJECT_DIR$/module-base" />
+            <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/plugin-service-manager" />
           </set>
         </option>
       </GradleProjectSettings>

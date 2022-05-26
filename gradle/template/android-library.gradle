@@ -1,6 +1,6 @@
 pluginsx {
-    id 'library'
-    id 'kotlin'
+    id 'android.library'
+    id 'kotlin.android'
 }
 
 android {

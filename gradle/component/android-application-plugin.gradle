@@ -2,7 +2,7 @@ project.buildscript.dependencies.with {
     
 }
 
-project.ext.gradleComponents.put("android", { project ->
+project.ext.gradleComponents.put("android.application", { project ->
     project.with {
         apply plugin: 'com.android.application'
     }

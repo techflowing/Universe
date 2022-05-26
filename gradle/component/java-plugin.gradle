@@ -1,0 +1,5 @@
+project.ext.gradleComponents.put("java", { project ->
+    project.with {
+        apply plugin: 'java-library'
+    }
+})
