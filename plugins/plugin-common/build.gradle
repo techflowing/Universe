@@ -1,0 +1,6 @@
+apply from: rootProject.file("gradle/template/plugin.gradle")
+
+dependencies {
+    implementation gradleApi()
+    implementation deps.gradle
+}

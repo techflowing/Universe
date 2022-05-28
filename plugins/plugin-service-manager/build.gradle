@@ -1,5 +1,23 @@
 apply from: rootProject.file("gradle/template/plugin.gradle")
 
+gradlePlugin {
+    plugins {
+        serviceManagerPlugin {
+            id = 'universe.service-manager'
+            implementationClass = 'win.techflowing.android.plugin.ServiceManagerPlugin'
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'service-manager'
+            version = '1.0.0'
+        }
+    }
+}
+
 dependencies {
-    
+
 }

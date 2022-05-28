@@ -1,0 +1,5 @@
+project.ext.gradleComponents.put("java.gradle.plugin", { project ->
+    project.with {
+        apply plugin: 'java-gradle-plugin'
+    }
+})

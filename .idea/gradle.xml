@@ -16,10 +16,13 @@
             <option value="$PROJECT_DIR$/app-ui-sample" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/library-log" />
+            <option value="$PROJECT_DIR$/library-service-manager" />
+            <option value="$PROJECT_DIR$/library-service-manager-annotation" />
             <option value="$PROJECT_DIR$/library-ui" />
             <option value="$PROJECT_DIR$/library-util" />
             <option value="$PROJECT_DIR$/module-base" />
             <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/plugin-common" />
             <option value="$PROJECT_DIR$/plugins/plugin-service-manager" />
           </set>
         </option>

@@ -10,8 +10,7 @@ pluginManagement {
 dependencyResolutionManagement {
     // 改变依赖定义名称
     defaultLibrariesExtensionName.set('deps')
-
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()

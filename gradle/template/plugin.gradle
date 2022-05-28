@@ -1,9 +1,32 @@
 pluginsx {
-    id 'java'
+    id 'java.gradle.plugin'
     id 'kotlin'
+    id 'maven.publish'
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+
+    // withJavadocJar()
+    withSourcesJar()
+}
+
+gradlePlugin {
+    // 关闭发布到 Plugin Marker Artifact 的配置 
+    automatedPublishing false
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'win.techflowing.android.plugin'
+            from components.java
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation deps.gradle
 }
