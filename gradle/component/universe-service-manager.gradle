@@ -1,0 +1,9 @@
+project.buildscript.dependencies.with {
+    classpath "win.techflowing.android.plugin:service-manager:1.0.0"
+}
+
+project.ext.gradleComponents.put("universe.service-manager", { project ->
+    project.with {
+        apply plugin: 'universe.service-manager'
+    }
+})

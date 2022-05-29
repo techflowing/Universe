@@ -5,7 +5,7 @@ project.ext.gradleComponents.put("maven.publish", { project ->
         publishing {
             repositories {
                 maven {
-                    url "${project.rootDir}/maven-repos"
+                    url "${rootDir}/${LOCAL_MAVEN_DIR}"
                 }
             }
         }

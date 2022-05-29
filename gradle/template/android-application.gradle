@@ -3,6 +3,7 @@ apply from: rootProject.file("gradle/config/version-config.gradle")
 pluginsx {
     id 'android.application'
     id 'kotlin.android'
+    id 'universe.service-manager'
 }
 
 android {

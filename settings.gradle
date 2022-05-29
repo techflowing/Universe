@@ -1,5 +1,8 @@
 pluginManagement {
     repositories {
+        maven {
+            url "${rootDir}/${LOCAL_MAVEN_DIR}"
+        }
         // Gradle 插件官方仓库 https://plugins.gradle.org/
         gradlePluginPortal()
         google()
@@ -12,6 +15,9 @@ dependencyResolutionManagement {
     defaultLibrariesExtensionName.set('deps')
     // repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
+        maven {
+            url "${rootDir}/${LOCAL_MAVEN_DIR}"
+        }
         google()
         mavenCentral()
     }

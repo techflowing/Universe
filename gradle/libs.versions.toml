@@ -20,7 +20,7 @@ gradle = 'com.android.tools.build:gradle:7.2.0'
 # 组件包依赖定义
 [bundles]
 
-# 插件依赖定义
+# 插件依赖定义，插件相关先不使用这种形式
 [plugins]
 application = { id = 'com.android.application', version = '7.2.0' }
 library = { id = 'com.android.library', version = '7.2.0' }

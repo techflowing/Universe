@@ -56,15 +56,14 @@ def pluginsx(@DelegatesTo(PluginsX.class) Closure<PluginsX> closure) {
     // 定义 pluginsx DSL 的解析
     def pluginsx = new PluginsX()
     DefaultGroovyMethods.with(pluginsx, closure)
-    
-    project.rootProject.ext.gradleComponents.each { entry ->
-        if (pluginsx.ids.contains(entry.key)) {
-            println("apply gradle component: " + entry.key)
-            entry.value(project)
-            pluginsx.ids.remove(entry.key)
+
+    // 根据 pluginsx 的注册顺序执行
+    pluginsx.ids.forEach { id ->
+        if (project.rootProject.ext.gradleComponents.containsKey(id)) {
+            println("apply gradle component: " + id)
+            project.rootProject.ext.gradleComponents.get(id)(project)
+            return
         }
-    }
-    if (pluginsx.ids.size() != 0) {
-        throw new GradleScriptException("pluginsx can not find task id for: " + pluginsx.ids, null)
+        throw new GradleScriptException("pluginsx can not find task id for: " + id, null)
     }
 }
