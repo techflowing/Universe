@@ -20,7 +20,9 @@ gradlePlugin {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'win.techflowing.android.plugin'
+            groupId = loadProperty('ARTIFACT_GROUP', 'win.techflowing.android.plugin')
+            artifactId = loadProperty('ARTIFACT_ID')
+            version = loadProperty('ARTIFACT_VERSION')
             from components.java
         }
     }
@@ -29,4 +31,21 @@ publishing {
 dependencies {
     implementation gradleApi()
     implementation deps.gradle
+}
+
+/**
+ * 读取 gradle.properties 中的配置
+ */
+String loadProperty(String key) {
+    return loadProperty(key, "")
+}
+
+/**
+ * 读取 gradle.properties 中的配置
+ */
+String loadProperty(String key, String defaultValue) {
+    if (project.hasProperty(key)) {
+        return project[key]
+    }
+    return defaultValue
 }

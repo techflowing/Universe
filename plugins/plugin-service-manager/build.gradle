@@ -9,15 +9,6 @@ gradlePlugin {
     }
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            artifactId = 'service-manager'
-            version = '1.0.0'
-        }
-    }
-}
-
 dependencies {
 
 }
