@@ -18,7 +18,6 @@ abstract class ServiceManagerClassVisitorFactory : AsmClassVisitorFactory<Plugin
     }
 
     override fun isInstrumentable(classData: ClassData): Boolean {
-        println(classData.className)
         return true
     }
 }

@@ -25,7 +25,7 @@ class ServiceManagerPlugin : Plugin<Project> {
                 InstrumentationScope.ALL
             ) {
                 // 设置外部传入参数
-                it.appName = pluginExtension.appName
+                it.appName = pluginExtension.appName ?: "测试"
             }
             variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COPY_FRAMES)
         }
