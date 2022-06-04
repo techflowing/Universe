@@ -5,6 +5,9 @@ dependencies {
     implementation deps.androidx.ktx.core
     implementation deps.google.material
 
-    implementation project(":library-ui")
     implementation project(":module-base")
+    implementation project(":library-ui")
+    implementation project(":library-log")
+    implementation project(":library-service-manager-annotation")
+    implementation project(":library-service-manager")
 }

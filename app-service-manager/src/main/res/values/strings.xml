@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Universe</string>
+    <string name="hello_world">Hello World！</string>
+    <string name="app_name_service_manager">Service 管理</string>
+</resources>

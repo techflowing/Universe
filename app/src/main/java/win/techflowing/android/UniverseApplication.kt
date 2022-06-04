@@ -3,6 +3,7 @@ package win.techflowing.android
 import android.app.Application
 import android.content.Context
 import win.techflowing.android.base.runtime.AppRuntimeInit
+import win.techflowing.android.log.XLog
 
 /**
  * 应用 Application
@@ -20,5 +21,10 @@ class UniverseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        initXLog()
+    }
+
+    private fun initXLog() {
+        XLog.init()
     }
 }

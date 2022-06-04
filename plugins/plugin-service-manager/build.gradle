@@ -4,11 +4,13 @@ gradlePlugin {
     plugins {
         serviceManagerPlugin {
             id = 'universe.service-manager'
-            implementationClass = 'win.techflowing.android.plugin.ServiceManagerPlugin'
+            implementationClass = 'win.techflowing.android.plugin.service.ServiceManagerPlugin'
         }
     }
 }
 
 dependencies {
     implementation project(':plugins:plugin-common')
+    implementation project(':library-service-manager')
+    implementation project(':library-service-manager-annotation')
 }

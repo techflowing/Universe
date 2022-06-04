@@ -1,4 +1,4 @@
-package win.techflowing.android.plugin
+package win.techflowing.android.plugin.service
 
 /**
  * Plugin 配置参数

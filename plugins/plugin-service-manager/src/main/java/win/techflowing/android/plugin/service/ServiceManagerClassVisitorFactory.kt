@@ -1,9 +1,10 @@
-package win.techflowing.android.plugin
+package win.techflowing.android.plugin.service
 
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import org.objectweb.asm.ClassVisitor
+import win.techflowing.android.plugin.service.visitor.ServiceImplClassVisitor
 
 /**
  * 插桩入口类创建工厂
@@ -14,10 +15,13 @@ import org.objectweb.asm.ClassVisitor
 abstract class ServiceManagerClassVisitorFactory : AsmClassVisitorFactory<PluginParams> {
 
     override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {
-        return ServiceManagerClassVisitor(parameters.get(), classContext, nextClassVisitor)
+        if (classContext.currentClassData.classAnnotations.contains(Constant.Annotation.SERVICE_IMPL)) {
+            return ServiceImplClassVisitor(parameters.get(), classContext, nextClassVisitor)
+        }
+        return nextClassVisitor
     }
 
     override fun isInstrumentable(classData: ClassData): Boolean {
-        return true
+        return classData.classAnnotations.contains(Constant.Annotation.SERVICE_IMPL)
     }
 }

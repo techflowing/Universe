@@ -1,9 +1,38 @@
 pluginsx {
     id 'java'
     id 'kotlin'
+    id 'maven.publish'
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = loadProperty('ARTIFACT_GROUP', 'win.techflowing')
+            artifactId = loadProperty('ARTIFACT_ID')
+            version = loadProperty('ARTIFACT_VERSION')
+            from components.java
+        }
+    }
+}
+
+/**
+ * 读取 gradle.properties 中的配置
+ */
+String loadProperty(String key) {
+    return loadProperty(key, "")
+}
+
+/**
+ * 读取 gradle.properties 中的配置
+ */
+String loadProperty(String key, String defaultValue) {
+    if (project.hasProperty(key)) {
+        return project[key]
+    }
+    return defaultValue
 }

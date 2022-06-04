@@ -1,5 +1,9 @@
 apply from: rootProject.file("gradle/template/android-application.gradle")
 
+pluginsx {
+    id 'universe.service-manager'
+}
+
 android {
     defaultConfig {
         applicationId "win.techflowing.android"
@@ -14,8 +18,10 @@ dependencies {
     // application 模块依赖
     implementation project(":app-ui-sample")
     implementation project(":app-log-sample")
+    implementation project(":app-service-manager")
 
     // 其它模块依赖
     implementation project(":library-ui")
+    implementation project(":library-log")
     implementation project(":module-base")
 }

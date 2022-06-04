@@ -1,4 +1,4 @@
-package win.techflowing.android.plugin
+package win.techflowing.android.plugin.service
 
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationScope
