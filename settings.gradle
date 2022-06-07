@@ -3,6 +3,9 @@ pluginManagement {
         maven {
             url "${rootDir}/${LOCAL_MAVEN_DIR}"
         }
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
         // Gradle 插件官方仓库 https://plugins.gradle.org/
         gradlePluginPortal()
         google()
@@ -17,6 +20,9 @@ dependencyResolutionManagement {
     repositories {
         maven {
             url "${rootDir}/${LOCAL_MAVEN_DIR}"
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
         }
         google()
         mavenCentral()
