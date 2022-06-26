@@ -5,6 +5,8 @@ import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import win.techflowing.android.plugin.service.create.Collector
+import java.io.File
 
 /**
  * Service Manager Plugin 入口
@@ -15,8 +17,6 @@ import org.gradle.api.Project
 class ServiceManagerPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        // 解析参数
-        val pluginExtension = project.extensions.create(PluginExtension.NAME, PluginExtension::class.java)
         // 注册 ClassVisitor
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
         androidComponents.onVariants { variant ->
@@ -24,8 +24,9 @@ class ServiceManagerPlugin : Plugin<Project> {
                 ServiceManagerClassVisitorFactory::class.java,
                 InstrumentationScope.ALL
             ) {
-                // 设置外部传入参数
-                it.appName = pluginExtension.appName ?: "测试"
+                val classesDir = File(project.buildDir, "intermediates/javac/${variant.name}/classes")
+                it.additionalClassesDir.set(classesDir)
+                it.scanCollector.set(Collector())
             }
             variant.instrumentation.setAsmFramesComputationMode(FramesComputationMode.COPY_FRAMES)
         }

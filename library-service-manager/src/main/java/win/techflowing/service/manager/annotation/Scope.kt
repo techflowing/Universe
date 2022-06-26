@@ -1,4 +1,4 @@
-package win.techflowing.service.annotation
+package win.techflowing.service.manager.annotation
 
 /**
  * 标记 Service 实现的方式，单例或者每次创建新对象

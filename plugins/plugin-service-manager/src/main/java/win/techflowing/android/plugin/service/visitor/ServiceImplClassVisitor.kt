@@ -8,7 +8,6 @@ import win.techflowing.android.plugin.service.Constant
 import win.techflowing.android.plugin.service.PluginParams
 import win.techflowing.android.plugin.common.uitl.ASMUtil
 import win.techflowing.android.plugin.common.uitl.ObjectFormatUtil
-import win.techflowing.android.plugin.service.Collector
 import java.lang.IllegalStateException
 
 /**
@@ -50,7 +49,7 @@ class ServiceImplClassVisitor(
                 "被 ${Constant.Annotation.SERVICE_IMPL} 注解的类必须实现实现 继承自 ${Constant.Class.I_SERVICE} 的接口"
             )
         }
-        println("找到了被 ${Constant.Annotation.SERVICE_IMPL} 注解的类: $name")
+        println("找到了被 @${Constant.Annotation.SERVICE_IMPL} 注解的类: $name")
     }
 
     override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
@@ -59,9 +58,13 @@ class ServiceImplClassVisitor(
             ObjectFormatUtil.nameToDesc(Constant.Annotation.SERVICE_IMPL) -> {
                 return ServiceImplAnnotationVisitor(api, annotationVisitor) { priority, scope ->
                     val curServiceImpl = classContext.currentClassData.className
-                    serviceList.forEach { service ->
-                        Collector.addService(service, curServiceImpl, priority, scope)
-                    }
+                    params.scanCollector.get().onScanServiceImpl(
+                        curServiceImpl,
+                        serviceList,
+                        priority,
+                        scope,
+                        params.additionalClassesDir.get()
+                    )
                 }
             }
         }

@@ -1,8 +1,8 @@
 package win.techflowing.android.plugin.service.visitor
 
 import org.objectweb.asm.AnnotationVisitor
-import win.techflowing.service.annotation.Priority
-import win.techflowing.service.annotation.Scope
+import win.techflowing.service.manager.annotation.Priority
+import win.techflowing.service.manager.annotation.Scope
 
 /**
  * ServiceImpl 注解信息扫描
@@ -21,20 +21,21 @@ class ServiceImplAnnotationVisitor(
         const val PRIORITY = "priority"
     }
 
-    override fun visit(name: String?, value: Any?) {
-        super.visit(name, value)
+    private var priority: Priority = Priority.DEFAULT
+    private var scope: Scope = Scope.SINGLETON
+
+    override fun visitEnum(name: String, descriptor: String, value: String) {
+        super.visitEnum(name, descriptor, value)
         if (name == SCOPE) {
-            println(value?.javaClass)
-            println(value)
+            scope = Scope.valueOf(value)
         }
         if (name == PRIORITY) {
-            println(value?.javaClass)
-            println(value)
+            priority = Priority.valueOf(value)
         }
     }
 
     override fun visitEnd() {
         super.visitEnd()
-        callback.invoke(Priority.DEFAULT, Scope.SINGLETON)
+        callback.invoke(priority, scope)
     }
 }

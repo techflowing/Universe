@@ -6,7 +6,7 @@ pluginsx {
 
 android {
     defaultConfig {
-        applicationId "win.techflowing.android"
+        applicationId "win.techflowing.android.universe"
     }
 }
 

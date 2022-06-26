@@ -1,5 +1,11 @@
 apply from: rootProject.file("gradle/template/dynamic-application.gradle")
 
+if (LocalConfig.singleApplication) {
+    pluginsx {
+        id 'universe.service-manager'
+    }
+}
+
 dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.ktx.core
@@ -8,6 +14,5 @@ dependencies {
     implementation project(":module-base")
     implementation project(":library-ui")
     implementation project(":library-log")
-    implementation project(":library-service-manager-annotation")
     implementation project(":library-service-manager")
 }

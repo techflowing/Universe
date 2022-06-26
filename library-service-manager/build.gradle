@@ -1,5 +1,5 @@
 apply from: rootProject.file("gradle/template/java-library.gradle")
 
 dependencies {
-    
+    implementation deps.kotlin.reflect
 }

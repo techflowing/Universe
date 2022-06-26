@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/test_once_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="测试一次性 Service" />
+
+    <Button
+        android:id="@+id/test_singleton_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="测试单例 Service" />
+
+    <Button
+        android:id="@+id/test_multiple_priority_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="测试多优先级 Service" />
+
+    <Button
+        android:id="@+id/test_multiple_impl_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="测试多实现 Service" />
+
+</LinearLayout>

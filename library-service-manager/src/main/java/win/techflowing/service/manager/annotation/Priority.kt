@@ -1,4 +1,4 @@
-package win.techflowing.service.annotation
+package win.techflowing.service.manager.annotation
 
 /**
  * 定义Service 实现优先级

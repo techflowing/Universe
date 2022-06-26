@@ -14,6 +14,9 @@ google-material = 'com.google.android.material:material:1.6.0'
 
 # 三方库
 javassist = 'org.javassist:javassist:3.29.0-GA'
+kotlin-reflect = 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
+kotlinpoet = 'com.squareup:kotlinpoet:1.12.0'
+apache-io = 'commons-io:commons-io:2.4'
 
 # 单测
 test-junit = 'junit:junit:4.13.2'

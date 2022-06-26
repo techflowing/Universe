@@ -1,7 +1,11 @@
 package win.techflowing.android.plugin.service
 
 import com.android.build.api.instrumentation.InstrumentationParameters
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import win.techflowing.android.plugin.service.create.Collector
+import java.io.File
 
 /**
  * 传递到 ClassVisitor 的参数
@@ -12,5 +16,8 @@ import org.gradle.api.tasks.Input
 interface PluginParams : InstrumentationParameters {
 
     @get:Input
-    var appName: String
+    val additionalClassesDir: Property<File>
+
+    @get:Internal
+    val scanCollector: Property<Collector>
 }
