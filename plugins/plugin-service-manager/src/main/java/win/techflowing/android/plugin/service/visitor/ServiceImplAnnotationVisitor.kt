@@ -1,6 +1,7 @@
 package win.techflowing.android.plugin.service.visitor
 
 import org.objectweb.asm.AnnotationVisitor
+import win.techflowing.android.plugin.common.log.ILogger
 import win.techflowing.service.manager.annotation.Priority
 import win.techflowing.service.manager.annotation.Scope
 
@@ -13,6 +14,7 @@ import win.techflowing.service.manager.annotation.Scope
 class ServiceImplAnnotationVisitor(
     api: Int,
     annotationVisitor: AnnotationVisitor,
+    private val logger: ILogger,
     private val callback: (priority: Priority, scope: Scope) -> Unit
 ) : AnnotationVisitor(api, annotationVisitor) {
 

@@ -1,7 +1,6 @@
 package win.techflowing.android.app.service
 
 import android.util.Log
-import win.techflowing.service.manager.annotation.Priority
 import win.techflowing.service.manager.annotation.ServiceImpl
 
 /**

@@ -4,6 +4,7 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import org.objectweb.asm.ClassVisitor
+import win.techflowing.android.plugin.common.log.PluginLogFactory
 import win.techflowing.android.plugin.service.visitor.ServiceImplClassVisitor
 
 /**
@@ -15,8 +16,10 @@ import win.techflowing.android.plugin.service.visitor.ServiceImplClassVisitor
 abstract class ServiceManagerClassVisitorFactory : AsmClassVisitorFactory<PluginParams> {
 
     override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {
+        val params = parameters.get()
+        val logger = PluginLogFactory.getLogger(params)
         if (classContext.currentClassData.classAnnotations.contains(Constant.Annotation.SERVICE_IMPL)) {
-            return ServiceImplClassVisitor(parameters.get(), classContext, nextClassVisitor)
+            return ServiceImplClassVisitor(params, classContext, logger, nextClassVisitor)
         }
         return nextClassVisitor
     }

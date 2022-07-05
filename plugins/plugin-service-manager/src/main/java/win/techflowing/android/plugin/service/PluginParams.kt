@@ -1,11 +1,9 @@
 package win.techflowing.android.plugin.service
 
-import com.android.build.api.instrumentation.InstrumentationParameters
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
+import win.techflowing.android.plugin.common.BaseParams
 import win.techflowing.android.plugin.service.create.Collector
-import java.io.File
 
 /**
  * 传递到 ClassVisitor 的参数
@@ -13,10 +11,7 @@ import java.io.File
  * @author techflowing@gmail.com
  * @since 2022/5/29 9:45 下午
  */
-interface PluginParams : InstrumentationParameters {
-
-    @get:Input
-    val additionalClassesDir: Property<File>
+interface PluginParams : BaseParams {
 
     @get:Internal
     val scanCollector: Property<Collector>
