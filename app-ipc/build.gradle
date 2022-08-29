@@ -1,0 +1,10 @@
+apply from: rootProject.file("gradle/template/dynamic-application.gradle")
+
+dependencies {
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.ktx.core
+    implementation deps.google.material
+
+    implementation project(":library-ui")
+    implementation project(":module-base")
+}

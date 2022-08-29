@@ -47,3 +47,5 @@
 * [Android KTX](https://developer.android.com/kotlin/ktx?hl=zh-cn)
 * [配色方案](https://www.materialpalette.com/blue/cyan)
 * [图标库-小假哥系列](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.dc64b3430&cid=37039)
+* [图标库-功能图标](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.d9df05512&cid=38559)
+* [图标库-常用彩色图标](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.d9df05512&cid=40261)
