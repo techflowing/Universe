@@ -4,4 +4,6 @@ dependencies {
     implementation deps.androidx.appcompat
     implementation deps.androidx.ktx.core
     implementation deps.google.material
+
+    implementation project(":library-util")
 }
