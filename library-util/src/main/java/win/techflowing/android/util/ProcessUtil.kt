@@ -7,6 +7,8 @@ import android.content.Context
 import android.os.Build
 import android.os.Process
 import android.text.TextUtils
+import java.io.BufferedReader
+import java.io.FileReader
 import java.lang.reflect.Method
 
 
@@ -17,6 +19,7 @@ import java.lang.reflect.Method
  * @since 2022/9/18 22:41
  */
 object ProcessUtil {
+
     /** 当前进程名 */
     private var curProcessName: String? = null
 
@@ -34,6 +37,10 @@ object ProcessUtil {
             return curProcessName
         }
         curProcessName = getCurrentProcessNameByActivityManager(context)
+        if (!TextUtils.isEmpty(curProcessName)) {
+            return curProcessName
+        }
+        curProcessName = getCurrentProcessNameByReadProcFile()
         return curProcessName
     }
 
@@ -75,6 +82,21 @@ object ProcessUtil {
                     return processInfo.processName
                 }
             }
+        }
+        return null
+    }
+
+    /** 通过读取 proc 文件获取进程名 */
+    private fun getCurrentProcessNameByReadProcFile(): String? {
+        try {
+            BufferedReader(FileReader("/proc/${Process.myPid()}/cmdline")).use {
+                val name = it.readLine()
+                if (!TextUtils.isEmpty(name)) {
+                    return name.trim()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         return null
     }

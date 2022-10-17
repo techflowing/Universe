@@ -2,4 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="win.techflowing.android.ipc">
 
+    <application>
+        <service android:name=".core.DispatcherProcessService" />
+        <provider
+            android:name=".core.DispatcherProcessProvider"
+            android:authorities="${applicationId}.ipc.service.dispatcher" />
+    </application>
 </manifest>

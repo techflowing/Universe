@@ -17,10 +17,11 @@ interface IServiceDispatcher {
      * 注册服务
      *
      * @param serviceCanonicalName 服务名称
+     * @param pid                  进程号
      * @param processName          进程名称
      * @param transporterBinder    服务传输机 Binder
      */
-    void registerService(String serviceCanonicalName, int processName, IBinder transporterBinder);
+    void registerService(String serviceCanonicalName, int pid, String processName, IBinder transporterBinder);
 
     /**
      * 取消服务注册

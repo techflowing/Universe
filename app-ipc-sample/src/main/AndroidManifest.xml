@@ -25,6 +25,9 @@
                 android:name="win.techflowing.android.app.ipc.IpcMainActivity_icon"
                 android:resource="@drawable/ic_ipc_item_application" />
         </activity>
+        <activity
+            android:name=".apple.AppleProcessActivity"
+            android:process=":apple" />
     </application>
 
 </manifest>

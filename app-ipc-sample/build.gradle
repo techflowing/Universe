@@ -6,5 +6,6 @@ dependencies {
     implementation deps.google.material
 
     implementation project(":library-ui")
+    implementation project(":library-ipc")
     implementation project(":module-base")
 }

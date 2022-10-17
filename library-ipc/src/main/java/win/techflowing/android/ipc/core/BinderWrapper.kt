@@ -1,4 +1,4 @@
-package win.techflowing.android.ipc
+package win.techflowing.android.ipc.core
 
 import android.os.IBinder
 import android.os.Parcel

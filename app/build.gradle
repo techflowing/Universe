@@ -19,10 +19,11 @@ dependencies {
     implementation project(":app-ui-sample")
     implementation project(":app-log-sample")
     implementation project(":app-service-manager")
-    implementation project(":app-ipc")
+    implementation project(":app-ipc-sample")
 
     // 其它模块依赖
     implementation project(":library-ui")
     implementation project(":library-log")
+    implementation project(":library-ipc")
     implementation project(":module-base")
 }

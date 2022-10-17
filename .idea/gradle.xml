@@ -12,7 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/app-ipc" />
+            <option value="$PROJECT_DIR$/app-ipc-sample" />
             <option value="$PROJECT_DIR$/app-log-sample" />
             <option value="$PROJECT_DIR$/app-service-manager" />
             <option value="$PROJECT_DIR$/app-ui-sample" />

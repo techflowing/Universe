@@ -3,6 +3,7 @@ package win.techflowing.android
 import android.app.Application
 import android.content.Context
 import win.techflowing.android.base.runtime.AppRuntimeInit
+import win.techflowing.android.ipc.Tartarus
 import win.techflowing.android.log.XLog
 
 /**
@@ -22,6 +23,11 @@ class UniverseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         initXLog()
+        initIpc()
+    }
+
+    private fun initIpc() {
+        Tartarus.init(this)
     }
 
     private fun initXLog() {
