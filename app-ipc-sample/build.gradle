@@ -7,5 +7,6 @@ dependencies {
 
     implementation project(":library-ui")
     implementation project(":library-ipc")
+    implementation project(":library-log")
     implementation project(":module-base")
 }

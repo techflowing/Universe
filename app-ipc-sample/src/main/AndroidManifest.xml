@@ -28,6 +28,9 @@
         <activity
             android:name=".apple.AppleProcessActivity"
             android:process=":apple" />
+        <activity
+            android:name=".banana.BananaProcessActivity"
+            android:process=":banana" />
     </application>
 
 </manifest>

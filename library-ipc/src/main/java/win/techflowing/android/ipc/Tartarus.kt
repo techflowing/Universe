@@ -54,7 +54,7 @@ object Tartarus {
         ServiceManager.get().registerRemoteService(service, serviceImpl)
     }
 
-    fun <SERVICE : IRemoteService, IMPL : SERVICE> getRemoteService(service: Class<SERVICE>): IMPL {
+    fun <SERVICE : IRemoteService> getRemoteService(service: Class<SERVICE>): SERVICE? {
         return ServiceManager.get().getRemoteService(service)
     }
 }

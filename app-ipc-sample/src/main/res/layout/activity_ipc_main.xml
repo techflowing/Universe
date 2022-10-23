@@ -5,15 +5,27 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/test_register_service"
-        style="@style/Theme.Universe.Button.List"
-        android:layout_marginTop="8dp"
-        android:text="测试注册服务" />
-
-    <Button
         android:id="@+id/start_apple_process_activity"
         style="@style/Theme.Universe.Button.List"
         android:layout_marginTop="8dp"
         android:text="启动苹果进程" />
+
+    <Button
+        android:id="@+id/start_banana_process_activity"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="启动香蕉进程" />
+
+    <Button
+        android:id="@+id/get_apple_process_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="获取苹果进程服务" />
+
+    <Button
+        android:id="@+id/get_banana_process_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="获取香蕉进程服务" />
 
 </LinearLayout>

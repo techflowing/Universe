@@ -5,8 +5,10 @@ import android.os.Process
 import android.os.RemoteException
 import win.techflowing.android.ipc.*
 import win.techflowing.android.ipc.log.Logger
-import win.techflowing.android.ipc.test.RemoteServiceImpl
 import win.techflowing.android.util.ProcessUtil
+import java.lang.reflect.InvocationHandler
+import java.lang.reflect.Method
+import java.lang.reflect.Proxy.newProxyInstance
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -23,12 +25,20 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
     /** 本进程内的 Service 缓存 */
     private val localServiceMap: MutableMap<Class<*>, Any> = ConcurrentHashMap()
 
-    /** 其它进程的 Service 缓存 */
-    private val remoteServiceMap: MutableMap<Class<*>, IBinder> = ConcurrentHashMap()
+    /** 其它进程的 Service Transporter 缓存，value 是 Transporter */
+    private val remoteTransporterMap: MutableMap<String, IBinder> = ConcurrentHashMap()
 
     /** ServiceDispatcher 进程位于本进程的 Binder Proxy 代理对象 */
     private var serviceDispatcherProxy: IServiceDispatcher? = null
 
+    /**
+     * 注册远程服务
+     *
+     * @param SERVICE 服务类型
+     * @param IMPL 服务实现类类型
+     * @param service 服务 Class
+     * @param serviceImpl 实现类
+     */
     fun <SERVICE : IRemoteService, IMPL : SERVICE> registerRemoteService(service: Class<SERVICE>, serviceImpl: IMPL) {
         // 先加下本地缓存
         localServiceMap[service] = serviceImpl
@@ -39,11 +49,31 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
             } else {
                 registerRemoteServiceByStartService(it)
             }
+            Transporter.getInstance().registerService(service, serviceImpl)
         }
     }
 
-    fun <SERVICE : IRemoteService, IMPL : SERVICE> getRemoteService(service: Class<SERVICE>): IMPL {
-        return RemoteServiceImpl() as IMPL
+    /**
+     * 获取远程服务
+     *
+     * @param SERVICE 服务类型
+     * @param service 服务 Class
+     * @return
+     */
+    fun <SERVICE : IRemoteService> getRemoteService(service: Class<SERVICE>): SERVICE? {
+        val impl = localServiceMap[service]
+        if (impl != null) {
+            return impl as SERVICE
+        }
+        return service.canonicalName?.let { name ->
+            remoteTransporterMap[name]?.let {
+                return createDynamicProxyInstance(service, it)
+            }
+            return getRemoteServiceTransporterBinder(name)?.let {
+                remoteTransporterMap[name] = it
+                return createDynamicProxyInstance(service, it)
+            }
+        }
     }
 
     override fun registerServiceDispatcher(serviceDispatcherBinder: IBinder?) {
@@ -75,6 +105,35 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
             this.asBinder(),
             Transporter.getInstance().asBinder()
         )
+    }
+
+    /**
+     * 获取RemoteService 的传输 Binder
+     *
+     * @param serviceName Service 名称
+     */
+    private fun getRemoteServiceTransporterBinder(serviceName: String): IBinder? {
+        initServiceDispatcherProxyLocked()
+        val binder = serviceDispatcherProxy?.getServiceTransporterBinder(serviceName) ?: return null
+        binder.linkToDeath({
+            remoteTransporterMap.remove(serviceName)
+        }, 0)
+        return binder
+    }
+
+    /**
+     * 为服务创建动态代理类
+     *
+     * @param T 服务类
+     * @param service 服务类 Class
+     * @param transporter 传输对象
+     */
+    private fun <T> createDynamicProxyInstance(service: Class<T>, transporter: IBinder): T {
+        return newProxyInstance(service.classLoader, arrayOf(service), object : InvocationHandler {
+            override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any {
+                return "动态代理测试"
+            }
+        }) as T
     }
 
     /**

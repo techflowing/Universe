@@ -11,6 +11,8 @@ import android.os.Parcelable
  */
 class Response() : SuperParcelable {
 
+
+
     constructor(parcel: Parcel) : this() {
         readFromParcel(parcel)
     }

@@ -44,6 +44,12 @@ class ServiceDispatcher : IServiceDispatcher.Stub() {
         }
     }
 
+    override fun getServiceTransporterBinder(serviceCanonicalName: String?): IBinder? {
+        return remoteServiceMap[serviceCanonicalName]?.let {
+            it.binder
+        }
+    }
+
     override fun unregisterService(serviceCanonicalName: String?) {
 
     }

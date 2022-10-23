@@ -24,6 +24,12 @@ interface IServiceDispatcher {
     void registerService(String serviceCanonicalName, int pid, String processName, IBinder transporterBinder);
 
     /**
+     * 获取 Service 执行 Transporter Binder 对象
+     * @param serviceCanonicalName 服务名称
+     */
+    IBinder getServiceTransporterBinder(String serviceCanonicalName);
+
+    /**
      * 取消服务注册
      *
      * @param serviceCanonicalName 服务名称

@@ -4,7 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import win.techflowing.android.app.ipc.apple.AppleProcessActivity
+import win.techflowing.android.app.ipc.apple.AppleService
+import win.techflowing.android.app.ipc.banana.BananaProcessActivity
+import win.techflowing.android.app.ipc.banana.BananaService
 import win.techflowing.android.base.BaseActivity
+import win.techflowing.android.ipc.Tartarus
+import win.techflowing.android.log.XLog
+import java.util.logging.Logger
 
 /**
  * 首页
@@ -14,12 +20,30 @@ import win.techflowing.android.base.BaseActivity
  */
 class IpcMainActivity : BaseActivity() {
 
+    val TAG = "IpcMainActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ipc_main)
 
         findViewById<Button>(R.id.start_apple_process_activity).setOnClickListener {
             startActivity(Intent(this, AppleProcessActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.start_banana_process_activity).setOnClickListener {
+            startActivity(Intent(this, BananaProcessActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.get_apple_process_service).setOnClickListener {
+            Tartarus.getRemoteService(AppleService::class.java)?.also {
+                XLog.e(TAG, "苹果进程服务结果：" + it.getAppleName())
+            }
+        }
+
+        findViewById<Button>(R.id.get_banana_process_service).setOnClickListener {
+            Tartarus.getRemoteService(BananaService::class.java)?.also {
+                XLog.e(TAG, "香蕉进程服务结果：" + it.getBananaName())
+            }
         }
     }
 }
