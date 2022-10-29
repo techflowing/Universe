@@ -37,12 +37,18 @@ class IpcMainActivity : BaseActivity() {
         findViewById<Button>(R.id.get_apple_process_service).setOnClickListener {
             Tartarus.getRemoteService(AppleService::class.java)?.also {
                 XLog.e(TAG, "苹果进程服务结果：" + it.getAppleName())
+                it.basicType(1, 10, 100, 1000, 1.0f, 1.0, true, 'A')
+                it.arrayType(arrayOf("1", "2"), arrayOf(1, 2, 3, 4))
+                it.collectType(listOf("1", "2"))
+                // it.genericType(listOf("1"), "!")
+                // it.genericArrayType(arrayOf("1"))
             }
         }
 
         findViewById<Button>(R.id.get_banana_process_service).setOnClickListener {
             Tartarus.getRemoteService(BananaService::class.java)?.also {
                 XLog.e(TAG, "香蕉进程服务结果：" + it.getBananaName())
+                XLog.e(TAG, it.hashCode())
             }
         }
     }

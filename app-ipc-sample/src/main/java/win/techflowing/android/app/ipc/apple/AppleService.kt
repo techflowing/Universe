@@ -10,5 +10,29 @@ import win.techflowing.android.ipc.IRemoteService
  */
 interface AppleService : IRemoteService {
 
-    fun getAppleName():String
+    fun getAppleName(): String
+
+    fun basicType(
+        byte: Byte,
+        short: Short,
+        int: Int,
+        long: Long,
+        float: Float,
+        double: Double,
+        boolean: Boolean,
+        char: Char
+    )
+
+    fun arrayType(
+        strArray: Array<String>,
+        intArray: Array<Int>
+    )
+
+    fun collectType(
+        list: List<String>
+    )
+
+    fun <T> genericType(list: List<T>, param: T)
+
+    fun <T> genericArrayType(array: Array<T>)
 }

@@ -130,8 +130,11 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
      */
     private fun <T> createDynamicProxyInstance(service: Class<T>, transporter: IBinder): T {
         return newProxyInstance(service.classLoader, arrayOf(service), object : InvocationHandler {
-            override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any {
-                return "动态代理测试"
+            override fun invoke(proxy: Any, method: Method, args: Array<Any?>?): Any? {
+                if (method.declaringClass == Object::class.java) {
+                    return if (args != null) method.invoke(this, *args) else method.invoke(this)
+                }
+                return Transporter.getInstance().invokeRemoteServiceMethod(transporter, method, args)
             }
         }) as T
     }
@@ -173,6 +176,10 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
                 BinderWrapperCursor.stripBinder(cursor)?.also { binder ->
                     serviceDispatcherProxy = IServiceDispatcher.Stub.asInterface(binder)
                     registerServiceManagerToServiceDispatcher()
+                    binder.linkToDeath({
+                        Logger.i(TAG, "remote ServiceDispatcher binderDied")
+                        serviceDispatcherProxy = null
+                    }, 0)
                 }
             }
             if (serviceDispatcherProxy != null) {

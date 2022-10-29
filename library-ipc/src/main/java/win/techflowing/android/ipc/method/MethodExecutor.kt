@@ -1,4 +1,4 @@
-package win.techflowing.android.ipc.core
+package win.techflowing.android.ipc.method
 
 import java.lang.reflect.Method
 
