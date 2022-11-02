@@ -26,7 +26,7 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
     private val localServiceMap: MutableMap<Class<*>, Any> = ConcurrentHashMap()
 
     /** 其它进程的 Service Transporter 缓存，value 是 Transporter */
-    private val remoteTransporterMap: MutableMap<String, IBinder> = ConcurrentHashMap()
+    private val remoteTransporterMap: MutableMap<String, ITransporter> = ConcurrentHashMap()
 
     /** ServiceDispatcher 进程位于本进程的 Binder Proxy 代理对象 */
     private var serviceDispatcherProxy: IServiceDispatcher? = null
@@ -112,13 +112,13 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
      *
      * @param serviceName Service 名称
      */
-    private fun getRemoteServiceTransporterBinder(serviceName: String): IBinder? {
+    private fun getRemoteServiceTransporterBinder(serviceName: String): ITransporter? {
         initServiceDispatcherProxyLocked()
         val binder = serviceDispatcherProxy?.getServiceTransporterBinder(serviceName) ?: return null
         binder.linkToDeath({
             remoteTransporterMap.remove(serviceName)
         }, 0)
-        return binder
+        return ITransporter.Stub.asInterface(binder)
     }
 
     /**
@@ -126,9 +126,9 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
      *
      * @param T 服务类
      * @param service 服务类 Class
-     * @param transporter 传输对象
+     * @param transporter 传输对象代理
      */
-    private fun <T> createDynamicProxyInstance(service: Class<T>, transporter: IBinder): T {
+    private fun <T> createDynamicProxyInstance(service: Class<T>, transporter: ITransporter): T {
         return newProxyInstance(service.classLoader, arrayOf(service), object : InvocationHandler {
             override fun invoke(proxy: Any, method: Method, args: Array<Any?>?): Any? {
                 if (method.declaringClass == Object::class.java) {

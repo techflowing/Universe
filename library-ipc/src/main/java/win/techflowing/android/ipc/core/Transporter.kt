@@ -4,6 +4,7 @@ import android.os.IBinder
 import win.techflowing.android.ipc.IRemoteService
 import win.techflowing.android.ipc.ITransporter
 import win.techflowing.android.ipc.Tartarus
+import win.techflowing.android.ipc.call.RemoteServiceCall
 import win.techflowing.android.ipc.method.MethodExecutor
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.method.MethodRequester
@@ -46,14 +47,16 @@ class Transporter private constructor() : ITransporter.Stub() {
     /**
      * 调用远程服务的 方法
      *
-     * @param transporter 传输 Binder
+     * @param transporter 传输 Binder 代理对象
      * @param method 远程服务的目标 Method
      * @param args 调用参数
      * @return 方法调用返回值
      */
-    fun invokeRemoteServiceMethod(transporter: IBinder, method: Method, vararg args: Any?): Any? {
+    fun invokeRemoteServiceMethod(transporter: ITransporter, method: Method, vararg args: Any?): Any? {
         val methodRequester = generateServiceRequester(method)
+        val remoteServiceCall = RemoteServiceCall(transporter, methodRequester, arrayOf(args))
         return null
+
     }
 
     /**

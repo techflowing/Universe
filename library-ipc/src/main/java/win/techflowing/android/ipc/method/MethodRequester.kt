@@ -1,6 +1,9 @@
 package win.techflowing.android.ipc.method
 
+import win.techflowing.android.ipc.Tartarus
 import win.techflowing.android.ipc.annotation.*
+import win.techflowing.android.ipc.call.adapter.CallAdapter
+import win.techflowing.android.ipc.call.adapter.DefaultCallAdapterFactory
 import win.techflowing.android.ipc.parameter.CallbackParameterHandler
 import win.techflowing.android.ipc.parameter.DefaultParameterHandler
 import win.techflowing.android.ipc.parameter.DirectionParameterHandler
@@ -20,6 +23,7 @@ import java.util.*
 class MethodRequester private constructor(
     private val className: String,
     private val methodName: String,
+    private val callAdapter: CallAdapter<*, *>,
     private val parameterTypeWrapper: Array<ParameterHandler<*>>,
     private val oneWay: Boolean
 ) {
@@ -46,7 +50,27 @@ class MethodRequester private constructor(
                 }
                 parameterHandlers.add(index, parseParameterHandler(index, paramType, parameterAnnotations[index]))
             }
-            return MethodRequester(className, methodName, parameterHandlers.toTypedArray(), oneWay)
+            val callAdapter = createCallAdapter()
+            return MethodRequester(className, methodName, callAdapter, parameterHandlers.toTypedArray(), oneWay)
+        }
+
+        /**
+         * 创建请求适配器
+         */
+        private fun createCallAdapter(): CallAdapter<*, *> {
+            val returnType = method.genericReturnType
+            if (!TypeUtil.isSupportedReturnType(returnType)) {
+                throw IllegalArgumentException(
+                    buildExceptionMessage("Method return type unsupported")
+                )
+            }
+            val annotations = method.annotations
+            Tartarus.getAdapterFactory().forEach { item ->
+                item.get(returnType, annotations)?.also {
+                    return it
+                }
+            }
+            return DefaultCallAdapterFactory.getInstance().get(returnType, annotations)!!
         }
 
         /**

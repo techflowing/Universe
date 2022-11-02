@@ -14,6 +14,16 @@ import kotlin.Boolean
 object TypeUtil {
 
     /**
+     * 返回参数类型是否是支持的
+     *
+     * @param type 参数类型
+     * @return
+     */
+    fun isSupportedReturnType(type: Type?): Boolean {
+        return isSupportedParamType(type)
+    }
+
+    /**
      * 参数类型是否是支持的，不支持的类型：
      *
      * @param type 参数类型

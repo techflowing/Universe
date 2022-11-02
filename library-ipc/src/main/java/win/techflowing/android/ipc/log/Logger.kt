@@ -1,5 +1,7 @@
 package win.techflowing.android.ipc.log
 
+import win.techflowing.android.ipc.Tartarus
+
 /**
  * Logger 日志输出类
  *
@@ -9,7 +11,10 @@ package win.techflowing.android.ipc.log
 object Logger : ILogger {
 
     private const val TAG = "IPC"
-    private var logger: ILogger = DefaultIpcLogger()
+
+    private val logger: ILogger by lazy {
+        Tartarus.getLogger()
+    }
 
     override fun d(tag: String, msg: String) {
         logger.d("$TAG-$tag", msg)
