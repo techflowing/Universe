@@ -24,10 +24,29 @@ class MethodRequester private constructor(
     private val className: String,
     private val methodName: String,
     private val callAdapter: CallAdapter<*, *>,
-    private val parameterTypeWrapper: Array<ParameterHandler<*>>,
+    private val parameterHandlers: Array<ParameterHandler>,
     private val oneWay: Boolean
 ) {
 
+    fun getClassName(): String {
+        return className
+    }
+
+    fun getMethodName(): String {
+        return methodName
+    }
+
+    fun getParameterHandlers(): Array<ParameterHandler> {
+        return parameterHandlers
+    }
+
+    fun getCallAdapter(): CallAdapter<*, *> {
+        return callAdapter
+    }
+
+    fun isOneWay(): Boolean {
+        return oneWay
+    }
 
     class Builder(private val method: Method) {
 
@@ -40,7 +59,7 @@ class MethodRequester private constructor(
             // 二维数组，因为每个参数可能有多个注解
             val parameterAnnotations = method.parameterAnnotations
             val paramCount = parameterAnnotations.size
-            val parameterHandlers = mutableListOf<ParameterHandler<*>>()
+            val parameterHandlers = mutableListOf<ParameterHandler>()
             for (index in 0 until paramCount) {
                 val paramType = paramTypes[index]
                 if (!TypeUtil.isSupportedParamType(paramType)) {
@@ -84,7 +103,7 @@ class MethodRequester private constructor(
             index: Int,
             parameterType: Type,
             annotations: Array<Annotation>?
-        ): ParameterHandler<*> {
+        ): ParameterHandler {
             val rawParameterClass = TypeUtil.getRawClass(parameterType)
                 ?: throw IllegalArgumentException(
                     buildExceptionMessage(
@@ -92,13 +111,13 @@ class MethodRequester private constructor(
                     )
                 )
             if (annotations == null || annotations.isEmpty()) {
-                return DefaultParameterHandler<Any>(rawParameterClass)
+                return DefaultParameterHandler(rawParameterClass)
             }
             for (annotation in annotations) {
                 if (annotation is Callback) {
-                    return CallbackParameterHandler<Any>(rawParameterClass)
+                    return CallbackParameterHandler(rawParameterClass)
                 } else if (annotation is In || annotation is Out || annotation is InOut) {
-                    return DirectionParameterHandler<Any>(rawParameterClass)
+                    return DirectionParameterHandler(rawParameterClass)
                 }
             }
             throw IllegalArgumentException(

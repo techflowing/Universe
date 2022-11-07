@@ -6,14 +6,14 @@ package win.techflowing.android.ipc.parameter
  * @author techflowing@gmail.com
  * @since 2022/10/26 22:04
  */
-interface ParameterHandler<T> {
+interface ParameterHandler {
 
     /**
      * 包装参数
      *
-     * @param receiver 参数包装接收器
      * @param value 参数值
      * @param index 参数在方法中的位置
+     * @param W 子类
      */
-    fun wrapper(index: Int, value: T, receiver: (index: Int, wrapper: BaseParameterWrapper) -> Unit)
+    fun <W : BaseParameterWrapper> wrapper(index: Int, value: Any?): W
 }

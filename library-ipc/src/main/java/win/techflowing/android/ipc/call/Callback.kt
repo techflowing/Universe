@@ -14,7 +14,7 @@ interface Callback<T> {
      * @param call 请求 Call
      * @param response 返回的数据
      */
-    fun onResponse(call: Call<T>, response: T)
+    fun onResponse(call: Call<T>, response: T?)
 
     /**
      * 执行失败的回调

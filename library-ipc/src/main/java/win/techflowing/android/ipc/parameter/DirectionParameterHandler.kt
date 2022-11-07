@@ -6,9 +6,9 @@ package win.techflowing.android.ipc.parameter
  * @author techflowing@gmail.com
  * @since 2022/10/26 23:08
  */
-class DirectionParameterHandler<T>(var paramType: Class<*>) : ParameterHandler<T> {
-
-    override fun wrapper(index: Int, value: T, receiver: (index: Int, wrapper: BaseParameterWrapper) -> Unit) {
+class DirectionParameterHandler(var paramType: Class<*>) : ParameterHandler {
+    override fun <W : BaseParameterWrapper> wrapper(index: Int, value: Any?): W {
         TODO("Not yet implemented")
     }
+
 }

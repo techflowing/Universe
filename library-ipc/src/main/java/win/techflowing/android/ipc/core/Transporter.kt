@@ -1,14 +1,12 @@
 package win.techflowing.android.ipc.core
 
-import android.os.IBinder
 import win.techflowing.android.ipc.IRemoteService
-import win.techflowing.android.ipc.ITransporter
-import win.techflowing.android.ipc.Tartarus
+import win.techflowing.android.ipc.aidl.ITransporter
 import win.techflowing.android.ipc.call.RemoteServiceCall
+import win.techflowing.android.ipc.call.Request
+import win.techflowing.android.ipc.call.Response
 import win.techflowing.android.ipc.method.MethodExecutor
-import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.method.MethodRequester
-import win.techflowing.android.util.ProcessUtil
 import java.lang.reflect.Method
 
 /**
@@ -78,10 +76,6 @@ class Transporter private constructor() : ITransporter.Stub() {
         }
     }
 
-    override fun basicTypes() {
-        Logger.e("yuanzeng", "进程名字：" + ProcessUtil.getCurrentProcessName(Tartarus.getContext()))
-    }
-
     companion object {
 
         private val ins by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -91,5 +85,9 @@ class Transporter private constructor() : ITransporter.Stub() {
         fun getInstance(): Transporter {
             return ins
         }
+    }
+
+    override fun execute(request: Request): Response {
+        TODO("Not yet implemented")
     }
 }

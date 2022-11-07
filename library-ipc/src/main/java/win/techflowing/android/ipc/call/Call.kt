@@ -36,5 +36,5 @@ interface Call<T> {
     /**
      * 是否已经调用了请求
      */
-    fun isCanceled()
+    fun isCanceled(): Boolean
 }
