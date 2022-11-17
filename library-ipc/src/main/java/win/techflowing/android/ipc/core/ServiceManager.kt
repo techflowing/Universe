@@ -4,6 +4,7 @@ import android.os.IBinder
 import android.os.Process
 import android.os.RemoteException
 import win.techflowing.android.ipc.*
+import win.techflowing.android.ipc.aidl.ITransporter
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.util.ProcessUtil
 import java.lang.reflect.InvocationHandler

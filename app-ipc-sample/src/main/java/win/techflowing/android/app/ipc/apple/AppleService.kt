@@ -1,6 +1,9 @@
 package win.techflowing.android.app.ipc.apple
 
+import android.os.Parcelable
 import win.techflowing.android.ipc.IRemoteService
+import win.techflowing.android.ipc.annotation.In
+import win.techflowing.android.ipc.annotation.InOut
 
 /**
  * Apple Service
@@ -23,16 +26,36 @@ interface AppleService : IRemoteService {
         char: Char
     )
 
-    fun arrayType(
-        strArray: Array<String>,
-        intArray: Array<Int>
+    fun basicArrayType(
+        @In byteArray: ByteArray,
+        @In shortArray: ShortArray,
+        @In intArray: IntArray,
+        @In longArray: LongArray,
+        @In floatArray: FloatArray,
+        @In doubleArray: DoubleArray,
+        @In booleanArray: BooleanArray,
+        @In charArray: CharArray
     )
 
-    fun collectType(
-        list: List<String>
+    fun boxArrayType(
+        @InOut byteArray: Array<Byte>,
+        @InOut shortArray: Array<Short>,
+        @InOut intArray: Array<Int>,
+        @InOut longArray: Array<Long>,
+        @InOut floatArray: Array<Float>,
+        @InOut doubleArray: Array<Double>,
+        @InOut booleanArray: Array<Boolean>,
+        @InOut charArray: Array<Char>
     )
 
-    fun <T> genericType(list: List<T>, param: T)
+    fun stringType(
+        string: String,
+        stringArray: Array<String>,
+        charSequence: CharSequence,
+        charSequenceArray: Array<CharSequence>,
+    )
 
-    fun <T> genericArrayType(array: Array<T>)
+    fun parcelableType(parcelable: Parcelable)
+
+    fun collectType(@InOut list: List<String>, @InOut map: Map<String, String>)
 }

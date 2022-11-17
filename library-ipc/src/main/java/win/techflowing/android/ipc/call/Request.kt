@@ -2,7 +2,7 @@ package win.techflowing.android.ipc.call
 
 import android.os.Parcel
 import android.os.Parcelable
-import win.techflowing.android.ipc.parameter.BaseParameterWrapper
+import win.techflowing.android.ipc.parameter.wrapper.BaseParameterWrapper
 import win.techflowing.android.ipc.util.ParcelableUtil
 
 /**
@@ -48,6 +48,22 @@ class Request : Parcelable {
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    fun getTargetClass(): String? {
+        return targetClass
+    }
+
+    fun getMethodName(): String? {
+        return methodName
+    }
+
+    fun getArgsWrapper(): Array<BaseParameterWrapper>? {
+        return argsWrapper
+    }
+
+    fun isOneway(): Boolean {
+        return oneway
     }
 
     companion object CREATOR : Parcelable.Creator<Request> {

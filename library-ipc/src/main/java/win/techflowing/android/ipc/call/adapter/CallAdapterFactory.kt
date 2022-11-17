@@ -14,5 +14,5 @@ abstract class CallAdapterFactory {
      * Returns a call adapter for interface methods that return `returnType`, or null if it
      * cannot be handled by this factory.
      */
-    abstract fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*, *>?
+    abstract fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*>?
 }

@@ -11,7 +11,7 @@ import java.lang.reflect.Type
  */
 class OriginalCallAdapterFactory : CallAdapterFactory() {
 
-    override fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*, *>? {
+    override fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*>? {
         TODO("Not yet implemented")
     }
 }

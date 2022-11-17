@@ -2,12 +2,14 @@ package win.techflowing.android.ipc.core
 
 import win.techflowing.android.ipc.IRemoteService
 import win.techflowing.android.ipc.aidl.ITransporter
-import win.techflowing.android.ipc.call.RemoteServiceCall
-import win.techflowing.android.ipc.call.Request
-import win.techflowing.android.ipc.call.Response
+import win.techflowing.android.ipc.call.*
+import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.method.MethodExecutor
 import win.techflowing.android.ipc.method.MethodRequester
+import win.techflowing.android.ipc.parameter.type.TypeTable
+import win.techflowing.android.ipc.util.TypeUtil
 import java.lang.reflect.Method
+import java.util.*
 
 /**
  * 跨进程方法调用 Binder，运行于每一个进程内
@@ -50,11 +52,10 @@ class Transporter private constructor() : ITransporter.Stub() {
      * @param args 调用参数
      * @return 方法调用返回值
      */
-    fun invokeRemoteServiceMethod(transporter: ITransporter, method: Method, vararg args: Any?): Any? {
+    fun invokeRemoteServiceMethod(transporter: ITransporter, method: Method, args: Array<Any?>?): Any? {
         val methodRequester = generateServiceRequester(method)
-        val remoteServiceCall = RemoteServiceCall(transporter, methodRequester, arrayOf(args))
-        return null
-
+        val remoteServiceCall = RemoteServiceCall(transporter, methodRequester, args)
+        return methodRequester.getCallAdapter().adapt(remoteServiceCall)
     }
 
     /**
@@ -76,7 +77,26 @@ class Transporter private constructor() : ITransporter.Stub() {
         }
     }
 
+    override fun execute(request: Request?): Response {
+        request?.also {
+            it.getArgsWrapper()?.forEach { wrapper ->
+                // TODO: 打印日志
+                Logger.d(TAG, "receive param, value :$wrapper")
+                Logger.d(TAG, "param type: ${wrapper.getType()}")
+                Logger.d(TAG, "param value: ${wrapper.getParam()}")
+            }
+            Logger.i(
+                TAG,
+                "receive request, target class: ${request.getTargetClass()}, method: ${request.getMethodName()}"
+            )
+            // TODO: 请求
+        }
+        return Response(StatusCode.BAD_REQUEST, "request info is null")
+    }
+
     companion object {
+
+        const val TAG = "Transporter"
 
         private val ins by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
             Transporter()
@@ -85,9 +105,5 @@ class Transporter private constructor() : ITransporter.Stub() {
         fun getInstance(): Transporter {
             return ins
         }
-    }
-
-    override fun execute(request: Request): Response {
-        TODO("Not yet implemented")
     }
 }

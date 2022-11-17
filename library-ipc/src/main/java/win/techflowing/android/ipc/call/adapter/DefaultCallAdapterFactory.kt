@@ -1,6 +1,7 @@
 package win.techflowing.android.ipc.call.adapter
 
 import win.techflowing.android.ipc.call.Call
+import win.techflowing.android.ipc.call.RemoteServiceCall
 import win.techflowing.android.ipc.util.TypeUtil
 import java.lang.reflect.Type
 
@@ -12,9 +13,9 @@ import java.lang.reflect.Type
  */
 class DefaultCallAdapterFactory : CallAdapterFactory() {
 
-    override fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*, *>? {
-        return object : CallAdapter<Any, Any> {
-            override fun adapt(call: Call<Any>): Any? {
+    override fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*> {
+        return object : CallAdapter<Any> {
+            override fun adapt(call: Call<*>): Any? {
                 val rawClass = TypeUtil.getRawClass(returnType)
                 var result = call.execute()
                 if (result == null) {

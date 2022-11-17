@@ -1,6 +1,11 @@
 package win.techflowing.android.ipc.aidl;
 
 import android.os.Binder;
+import android.os.IBinder;
+import android.os.IInterface;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,11 +16,11 @@ import win.techflowing.android.ipc.call.Response;
 /**
  * 用于代理 Service 跨进程调用的 Binder，每个进程只有一个实例，向 ServiceDispatcher 进程传递，进而向其它目标进程传递
  */
-public interface ITransporter extends android.os.IInterface {
+public interface ITransporter extends IInterface {
     /**
      * Default implementation for ITransporter.
      */
-    public static class Default implements ITransporter {
+    class Default implements ITransporter {
         /**
          * 执行请求
          *
@@ -23,12 +28,12 @@ public interface ITransporter extends android.os.IInterface {
          * @return 远程请求执行结果
          */
         @Override
-        public Response execute(@NonNull Request request) throws android.os.RemoteException {
+        public Response execute(@NonNull Request request) throws RemoteException {
             return null;
         }
 
         @Override
-        public android.os.IBinder asBinder() {
+        public IBinder asBinder() {
             return null;
         }
     }
@@ -36,7 +41,7 @@ public interface ITransporter extends android.os.IInterface {
     /**
      * Local-side IPC implementation stub class.
      */
-    public static abstract class Stub extends Binder implements ITransporter {
+    abstract class Stub extends Binder implements ITransporter {
         private static final java.lang.String DESCRIPTOR = "win.techflowing.android.ipc.aidl.ITransporter";
 
         /**
@@ -50,11 +55,11 @@ public interface ITransporter extends android.os.IInterface {
          * Cast an IBinder object into an win.techflowing.android.ipc.aidl.ITransporter interface,
          * generating a proxy if needed.
          */
-        public static ITransporter asInterface(android.os.IBinder obj) {
+        public static ITransporter asInterface(IBinder obj) {
             if ((obj == null)) {
                 return null;
             }
-            android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
+            IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
             if (((iin != null) && (iin instanceof ITransporter))) {
                 return ((ITransporter) iin);
             }
@@ -62,13 +67,13 @@ public interface ITransporter extends android.os.IInterface {
         }
 
         @Override
-        public android.os.IBinder asBinder() {
+        public IBinder asBinder() {
             return this;
         }
 
         @Override
-        public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) throws android.os.RemoteException {
-            java.lang.String descriptor = DESCRIPTOR;
+        public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
+            String descriptor = DESCRIPTOR;
             switch (code) {
                 case INTERFACE_TRANSACTION: {
                     reply.writeString(descriptor);
@@ -83,10 +88,13 @@ public interface ITransporter extends android.os.IInterface {
                         _arg0 = null;
                     }
                     Response _result = this.execute(_arg0);
+                    if ((flags & IBinder.FLAG_ONEWAY) != 0) {
+                        return true;
+                    }
                     reply.writeNoException();
                     if ((_result != null)) {
                         reply.writeInt(1);
-                        _result.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+                        _result.writeToParcel(reply, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
                     } else {
                         reply.writeInt(0);
                     }
@@ -100,14 +108,14 @@ public interface ITransporter extends android.os.IInterface {
 
         private static class Proxy implements ITransporter {
 
-            private android.os.IBinder mRemote;
+            private IBinder mRemote;
 
-            Proxy(android.os.IBinder remote) {
+            Proxy(IBinder remote) {
                 mRemote = remote;
             }
 
             @Override
-            public android.os.IBinder asBinder() {
+            public IBinder asBinder() {
                 return mRemote;
             }
 
@@ -122,9 +130,9 @@ public interface ITransporter extends android.os.IInterface {
              * @return 远程请求执行结果
              */
             @Override
-            public Response execute(@NonNull Request request) throws android.os.RemoteException {
-                android.os.Parcel _data = android.os.Parcel.obtain();
-                android.os.Parcel _reply = android.os.Parcel.obtain();
+            public Response execute(@Nullable Request request) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
                 Response _result;
                 try {
                     _data.writeInterfaceToken(DESCRIPTOR);
@@ -134,10 +142,12 @@ public interface ITransporter extends android.os.IInterface {
                     } else {
                         _data.writeInt(0);
                     }
-                    boolean _status = mRemote.transact(Stub.TRANSACTION_execute, _data, _reply, 0);
-                    if (!_status && getDefaultImpl() != null) {
-                        return getDefaultImpl().execute(request);
+                    // One-way mode just transact and return directly.
+                    if (request != null && request.isOneway()) {
+                        mRemote.transact(Stub.TRANSACTION_execute, _data, null, IBinder.FLAG_ONEWAY);
+                        return null;
                     }
+                    mRemote.transact(Stub.TRANSACTION_execute, _data, _reply, 0);
                     _reply.readException();
                     if ((0 != _reply.readInt())) {
                         _result = Response.CREATOR.createFromParcel(_reply);
@@ -150,29 +160,9 @@ public interface ITransporter extends android.os.IInterface {
                 }
                 return _result;
             }
-
-            public static ITransporter sDefaultImpl;
         }
 
-        static final int TRANSACTION_execute = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
-
-        public static boolean setDefaultImpl(ITransporter impl) {
-            // Only one user of this interface can use this function
-            // at a time. This is a heuristic to detect if two different
-            // users in the same process use this function.
-            if (Stub.Proxy.sDefaultImpl != null) {
-                throw new IllegalStateException("setDefaultImpl() called twice");
-            }
-            if (impl != null) {
-                Stub.Proxy.sDefaultImpl = impl;
-                return true;
-            }
-            return false;
-        }
-
-        public static ITransporter getDefaultImpl() {
-            return Stub.Proxy.sDefaultImpl;
-        }
+        static final int TRANSACTION_execute = (IBinder.FIRST_CALL_TRANSACTION);
     }
 
     /**
@@ -182,5 +172,5 @@ public interface ITransporter extends android.os.IInterface {
      * @return 远程请求执行结果
      */
     @Nullable
-    Response execute(@NonNull Request request) throws android.os.RemoteException;
+    Response execute(@Nullable Request request) throws RemoteException;
 }

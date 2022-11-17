@@ -8,7 +8,7 @@ package win.techflowing.android.ipc.call
  */
 object StatusCode {
     const val SUCCESS = 200
-    const val ILLEGAL_ACCESS = 400
+    const val BAD_REQUEST = 400
     const val INVOCATION_FAIL = 401
     const val NOT_FOUND = 404
 }

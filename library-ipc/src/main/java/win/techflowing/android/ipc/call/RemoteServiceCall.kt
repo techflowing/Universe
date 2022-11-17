@@ -4,7 +4,7 @@ import android.os.RemoteException
 import win.techflowing.android.ipc.aidl.ITransporter
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.method.MethodRequester
-import win.techflowing.android.ipc.parameter.BaseParameterWrapper
+import win.techflowing.android.ipc.parameter.wrapper.BaseParameterWrapper
 
 /**
  * 远程方法调用封装
@@ -15,7 +15,7 @@ import win.techflowing.android.ipc.parameter.BaseParameterWrapper
 class RemoteServiceCall(
     private val transporter: ITransporter,
     private val methodRequester: MethodRequester,
-    private val args: Array<Any?>
+    private val args: Array<Any?>?
 ) : Call<Any> {
 
     @Volatile
@@ -72,14 +72,14 @@ class RemoteServiceCall(
     @Throws(RemoteException::class)
     private fun executeInternal(): Any? {
         val paramsHandlers = methodRequester.getParameterHandlers()
-        val argsCount = args.size
+        val argsCount = args?.size ?: 0
         if (argsCount != paramsHandlers.size) {
             throw IllegalArgumentException(
-                "Argument count ($argsCount) doesn't match expected count (${paramsHandlers.size})"
+                "Argument count ($argsCount) doesn't match expected parameter handler count (${paramsHandlers.size})"
             )
         }
         val paramsWrapper = Array<BaseParameterWrapper>(argsCount) { index ->
-            return@Array paramsHandlers[index].wrapper(index, args[index])
+            return@Array paramsHandlers[index].wrapper(index, args?.get(index))
         }
         val request = Request(
             methodRequester.getClassName(),
@@ -91,7 +91,7 @@ class RemoteServiceCall(
         if (response.getStatusCode() != StatusCode.SUCCESS) {
             Logger.e(TAG, "execute remote service call fail: ${response.getStatusMessage()}")
         }
-        return response
+        return response.getResult()
     }
 
     private fun checkExecuted() {

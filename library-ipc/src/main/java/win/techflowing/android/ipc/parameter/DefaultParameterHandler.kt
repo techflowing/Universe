@@ -1,5 +1,9 @@
 package win.techflowing.android.ipc.parameter
 
+import win.techflowing.android.ipc.parameter.wrapper.BaseParameterWrapper
+import win.techflowing.android.ipc.parameter.wrapper.InParameterWrapper
+import win.techflowing.android.ipc.util.TypeUtil
+
 /**
  * 普通参数包装器
  *
@@ -9,7 +13,12 @@ package win.techflowing.android.ipc.parameter
 class DefaultParameterHandler(var paramType: Class<*>) : ParameterHandler {
 
     override fun <W : BaseParameterWrapper> wrapper(index: Int, value: Any?): W {
-        TODO("Not yet implemented")
+        if (TypeUtil.canOnlyBeInType(paramType)) {
+            return InParameterWrapper(value, paramType) as W
+        } else {
+            throw IllegalArgumentException(
+                "Parameter type '${paramType.simpleName}' can be an out type, so you must declare it as @In, @Out or @Inout."
+            )
+        }
     }
-
 }

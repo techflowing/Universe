@@ -10,10 +10,10 @@ import win.techflowing.android.ipc.call.Call
  * @author techflowing@gmail.com
  * @since 2022/11/1 23:11
  */
-interface CallAdapter<R, T> {
+interface CallAdapter<R> {
 
     /**
      * Returns an instance of `T` which delegates to `call`.
      */
-    fun adapt(call: Call<R>): T?
+    fun adapt(call: Call<*>): R?
 }

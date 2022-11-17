@@ -1,5 +1,7 @@
 package win.techflowing.android.ipc.parameter
 
+import win.techflowing.android.ipc.parameter.wrapper.BaseParameterWrapper
+
 /**
  * 参数包装器，包装参数为 TypeWrapper 对象，包含参数类型，和参数值
  *

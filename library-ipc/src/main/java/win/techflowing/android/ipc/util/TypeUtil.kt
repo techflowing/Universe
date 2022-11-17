@@ -4,6 +4,15 @@ import java.lang.reflect.*
 import java.lang.reflect.Array
 import kotlin.Any
 import kotlin.Boolean
+import kotlin.Byte
+import kotlin.Char
+import kotlin.CharSequence
+import kotlin.Double
+import kotlin.Float
+import kotlin.Int
+import kotlin.Long
+import kotlin.Short
+import kotlin.String
 
 /**
  * 类型相关工具类
@@ -12,6 +21,28 @@ import kotlin.Boolean
  * @since 2022/10/26 21:42
  */
 object TypeUtil {
+
+    /**
+     * 当前参数类型是否只能使用 @in 注解
+     *
+     * @param classType Class
+     */
+    fun canOnlyBeInType(classType: Class<*>): Boolean {
+        return isPrimitiveType(classType) || classType == String::class.java || classType == CharSequence::class.java
+    }
+
+    /**
+     * 是否是基本类型
+     *
+     * @param classType Class
+     */
+    fun isPrimitiveType(classType: Class<*>): Boolean {
+        return classType.isPrimitive || classType == Byte::class.java
+                || classType == Short::class.java || classType == Int::class.java
+                || classType == Long::class.java || classType == Float::class.java
+                || classType == Double::class.java || classType == Boolean::class.java
+                || classType == Char::class.java
+    }
 
     /**
      * 返回参数类型是否是支持的

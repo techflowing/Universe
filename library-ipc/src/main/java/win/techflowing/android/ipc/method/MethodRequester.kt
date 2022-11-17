@@ -23,7 +23,7 @@ import java.util.*
 class MethodRequester private constructor(
     private val className: String,
     private val methodName: String,
-    private val callAdapter: CallAdapter<*, *>,
+    private val callAdapter: CallAdapter<*>,
     private val parameterHandlers: Array<ParameterHandler>,
     private val oneWay: Boolean
 ) {
@@ -40,7 +40,7 @@ class MethodRequester private constructor(
         return parameterHandlers
     }
 
-    fun getCallAdapter(): CallAdapter<*, *> {
+    fun getCallAdapter(): CallAdapter<*> {
         return callAdapter
     }
 
@@ -76,7 +76,7 @@ class MethodRequester private constructor(
         /**
          * 创建请求适配器
          */
-        private fun createCallAdapter(): CallAdapter<*, *> {
+        private fun createCallAdapter(): CallAdapter<*> {
             val returnType = method.genericReturnType
             if (!TypeUtil.isSupportedReturnType(returnType)) {
                 throw IllegalArgumentException(
@@ -89,7 +89,7 @@ class MethodRequester private constructor(
                     return it
                 }
             }
-            return DefaultCallAdapterFactory.getInstance().get(returnType, annotations)!!
+            return DefaultCallAdapterFactory.getInstance().get(returnType, annotations)
         }
 
         /**
@@ -117,7 +117,7 @@ class MethodRequester private constructor(
                 if (annotation is Callback) {
                     return CallbackParameterHandler(rawParameterClass)
                 } else if (annotation is In || annotation is Out || annotation is InOut) {
-                    return DirectionParameterHandler(rawParameterClass)
+                    return DirectionParameterHandler(annotation, rawParameterClass)
                 }
             }
             throw IllegalArgumentException(
