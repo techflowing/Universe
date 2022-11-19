@@ -45,6 +45,10 @@ class InParameterWrapper : BaseParameterWrapper {
         return param
     }
 
+    override fun syncRemoteValueFromParcel(source: Parcel) {
+        // Nothing to do with @In type
+    }
+
     override fun describeContents(): Int {
         return 0
     }

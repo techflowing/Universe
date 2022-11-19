@@ -2,6 +2,7 @@ package win.techflowing.android.ipc.parameter.wrapper
 
 import android.os.Parcel
 import android.os.Parcelable
+import win.techflowing.android.ipc.parameter.type.OutTypeIO
 import win.techflowing.android.ipc.parameter.type.TypeIO
 import win.techflowing.android.ipc.parameter.type.TypeTable
 
@@ -21,16 +22,31 @@ class InOutParameterWrapper : BaseParameterWrapper {
         this.type = TypeTable.getTypeIndex(paramType)
     }
 
+    /**
+     * 服务端读取数据
+     */
     constructor(parcel: Parcel) {
         type = parcel.readInt()
-        val type = TypeTable.getTypeIO(type) as TypeIO<Any?>
-        param = type.createFromParcel(parcel)
+        val typeIO = TypeTable.getTypeIO(type) as TypeIO<Any?>
+        param = typeIO.createFromParcel(parcel)
     }
 
+    /**
+     * 请求端写入数据
+     */
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(type)
-        val type = TypeTable.getTypeIO(type) as TypeIO<Any?>
-        type.writeToParcel(parcel, flags, param)
+        val typeIO = TypeTable.getTypeIO(type) as TypeIO<Any?>
+        typeIO.writeToParcel(parcel, flags, param)
+    }
+
+    /**
+     * 读取服务端返回的数据
+     */
+    override fun syncRemoteValueFromParcel(source: Parcel) {
+        type = source.readInt()
+        val typeIO = TypeTable.getTypeIO(type) as OutTypeIO<Any?>
+        typeIO.syncValueFromParcel(source, param)
     }
 
     override fun getType(): Int {

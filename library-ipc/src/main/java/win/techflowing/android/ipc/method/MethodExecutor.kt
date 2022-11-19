@@ -1,5 +1,8 @@
 package win.techflowing.android.ipc.method
 
+import win.techflowing.android.ipc.call.Response
+import win.techflowing.android.ipc.call.StatusCode
+import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
 /**
@@ -12,4 +15,28 @@ import java.lang.reflect.Method
  */
 class MethodExecutor(private val target: Any, private val method: Method) {
 
+    fun execute(args: Array<Any?>?): Response {
+        var code = StatusCode.SUCCESS
+        var message = "Call method '${method.name}' successfully!"
+        val throwable: Throwable?
+        try {
+            val result = if (args == null) {
+                method.invoke(target)
+            } else {
+                method.invoke(target, *args)
+            }
+            return Response(code, message, result)
+        } catch (e: IllegalAccessException) {
+            code = StatusCode.BAD_REQUEST
+            throwable = e
+        } catch (e: InvocationTargetException) {
+            code = StatusCode.INVOCATION_FAIL
+            throwable = e
+        } catch (e: Throwable) {
+            code = StatusCode.BAD_REQUEST
+            throwable = e
+        }
+        message = "Exception occur when execute method: ${method.name} \n ${throwable?.message}"
+        return Response(code, message)
+    }
 }

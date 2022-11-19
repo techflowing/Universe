@@ -89,12 +89,19 @@ public interface ITransporter extends IInterface {
                     }
                     Response _result = this.execute(_arg0);
                     if ((flags & IBinder.FLAG_ONEWAY) != 0) {
+                        // One-way mode just execute and return directly.
                         return true;
                     }
                     reply.writeNoException();
                     if ((_result != null)) {
                         reply.writeInt(1);
                         _result.writeToParcel(reply, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    if ((_arg0 != null)) {
+                        reply.writeInt(1);
+                        _arg0.writeToParcel(reply, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
                     } else {
                         reply.writeInt(0);
                     }
@@ -130,7 +137,7 @@ public interface ITransporter extends IInterface {
              * @return 远程请求执行结果
              */
             @Override
-            public Response execute(@Nullable Request request) throws RemoteException {
+            public Response execute(Request request) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 Response _result;
@@ -154,6 +161,10 @@ public interface ITransporter extends IInterface {
                     } else {
                         _result = null;
                     }
+                    // InOut, Out 类型的参数读取远端返回的 Request 数据
+                    if ((0 != _reply.readInt()) && request != null) {
+                        request.syncRemoteValueFromParcel(_reply);
+                    }
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -171,6 +182,5 @@ public interface ITransporter extends IInterface {
      * @param request 请求信息
      * @return 远程请求执行结果
      */
-    @Nullable
-    Response execute(@Nullable Request request) throws RemoteException;
+    Response execute(Request request) throws RemoteException;
 }

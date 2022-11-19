@@ -3,7 +3,7 @@ package win.techflowing.android.ipc.parameter.type
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
-import win.techflowing.android.ipc.ReadableParcelable
+import win.techflowing.android.ipc.IReadableParcelable
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.util.ParcelableUtil
 import java.lang.reflect.InvocationTargetException
@@ -122,7 +122,7 @@ class ByteArrayType : ArrayTypeIO<ByteArray> {
         return source.createByteArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: ByteArray) {
+    override fun syncValueFromParcel(source: Parcel, target: ByteArray) {
         source.readByteArray(target)
     }
 
@@ -154,7 +154,7 @@ class ShortArrayType : ArrayTypeIO<ShortArray> {
         }
     }
 
-    override fun readFromParcel(source: Parcel, target: ShortArray) {
+    override fun syncValueFromParcel(source: Parcel, target: ShortArray) {
         val size = source.readInt()
         if (size == target.size) {
             for (i in 0 until size) {
@@ -180,7 +180,7 @@ class IntArrayType : ArrayTypeIO<IntArray> {
         return source.createIntArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: IntArray) {
+    override fun syncValueFromParcel(source: Parcel, target: IntArray) {
         source.readIntArray(target)
     }
 
@@ -199,7 +199,7 @@ class LongArrayType : ArrayTypeIO<LongArray> {
         return source.createLongArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: LongArray) {
+    override fun syncValueFromParcel(source: Parcel, target: LongArray) {
         source.readLongArray(target)
     }
 
@@ -218,7 +218,7 @@ class FloatArrayType : ArrayTypeIO<FloatArray> {
         return source.createFloatArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: FloatArray) {
+    override fun syncValueFromParcel(source: Parcel, target: FloatArray) {
         source.readFloatArray(target)
     }
 
@@ -237,7 +237,7 @@ class DoubleArrayType : ArrayTypeIO<DoubleArray> {
         return source.createDoubleArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: DoubleArray) {
+    override fun syncValueFromParcel(source: Parcel, target: DoubleArray) {
         source.readDoubleArray(target)
     }
 
@@ -256,7 +256,7 @@ class BooleanArrayType : ArrayTypeIO<BooleanArray> {
         return source.createBooleanArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: BooleanArray) {
+    override fun syncValueFromParcel(source: Parcel, target: BooleanArray) {
         source.readBooleanArray(target)
     }
 
@@ -275,7 +275,7 @@ class CharArrayType : ArrayTypeIO<CharArray> {
         return source.createCharArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: CharArray) {
+    override fun syncValueFromParcel(source: Parcel, target: CharArray) {
         source.readCharArray(target)
     }
 
@@ -287,215 +287,183 @@ class CharArrayType : ArrayTypeIO<CharArray> {
 /**
  * 包装类数组转换
  */
-fun <T> boxArrayConvert(target: Array<T>, value: (index: Int) -> T) {
-    for (index in target.indices) {
-        target[index] = value.invoke(index)
+inline fun <reified T> boxArrayConvert(source: Array<Any?>?): Array<T?>? {
+    if (source == null) {
+        return null
+    }
+    val result = arrayOfNulls<T>(source.size)
+    for (index in source.indices) {
+        result[index] = if (source[index] != null) source[index] as T else null
+    }
+    return result
+}
+
+/**
+ * 复制数组元素
+ */
+fun <T> copyArray(source: Array<T?>?, target: Array<T?>) {
+    if (source != null && source.size == target.size) {
+        source.copyInto(target)
+    } else {
+        throw IllegalStateException("bad array")
     }
 }
 
-class BoxByteArrayType : ArrayTypeIO<Array<Byte>> {
+class BoxByteArrayType : ArrayTypeIO<Array<Byte?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Byte>) {
-        dest.writeByteArray(value.toByteArray())
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Byte?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Byte>? {
-        return source.createByteArray()?.toTypedArray()
+    override fun createFromParcel(source: Parcel): Array<Byte?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Byte>) {
-        val byteArray = ByteArray(target.size)
-        source.readByteArray(byteArray)
-        boxArrayConvert(target) {
-            byteArray[it]
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Byte?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Byte> {
-        return Array(length) { 0 }
+    override fun newInstance(length: Int): Array<Byte?> {
+        return arrayOfNulls(length)
     }
 }
 
-class BoxShortArrayType : ArrayTypeIO<Array<Short>> {
+class BoxShortArrayType : ArrayTypeIO<Array<Short?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Short>) {
-        val size = value.size
-        dest.writeInt(size)
-        for (i in 0 until size) {
-            dest.writeInt(value[i].toInt())
-        }
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Short?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Short>? {
-        val size = source.readInt()
-        return if (size >= 0 && size <= source.dataAvail() shr 2) {
-            val array = newInstance(size)
-            for (i in 0 until size) {
-                array[i] = source.readInt().toShort()
-            }
-            array
-        } else {
-            null
-        }
+    override fun createFromParcel(source: Parcel): Array<Short?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Short>) {
-        val size = source.readInt()
-        if (size == target.size) {
-            for (i in 0 until size) {
-                target[i] = source.readInt().toShort()
-            }
-        } else {
-            throw IllegalStateException("bad array lengths")
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Short?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Short> {
-        return Array(length) { 0 }
+    override fun newInstance(length: Int): Array<Short?> {
+        return arrayOfNulls(length)
     }
 }
 
-class BoxIntArrayType : ArrayTypeIO<Array<Int>> {
+class BoxIntArrayType : ArrayTypeIO<Array<Int?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Int>) {
-        dest.writeIntArray(value.toIntArray())
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Int?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Int>? {
-        return source.createIntArray()?.toTypedArray()
+    override fun createFromParcel(source: Parcel): Array<Int?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Int>) {
-        val intArray = IntArray(target.size)
-        source.readIntArray(intArray)
-        boxArrayConvert(target) {
-            intArray[it]
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Int?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Int> {
-        return Array(length) { 0 }
+    override fun newInstance(length: Int): Array<Int?> {
+        return arrayOfNulls(length)
     }
 }
 
-class BoxLongArrayType : ArrayTypeIO<Array<Long>> {
+class BoxLongArrayType : ArrayTypeIO<Array<Long?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Long>) {
-        dest.writeLongArray(value.toLongArray())
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Long?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Long>? {
-        return source.createLongArray()?.toTypedArray()
+    override fun createFromParcel(source: Parcel): Array<Long?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Long>) {
-        val longArray = LongArray(target.size)
-        source.readLongArray(longArray)
-        boxArrayConvert(target) {
-            longArray[it]
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Long?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Long> {
-        return Array(length) { 0 }
+    override fun newInstance(length: Int): Array<Long?> {
+        return arrayOfNulls(length)
     }
 }
 
-class BoxFloatArrayType : ArrayTypeIO<Array<Float>> {
+class BoxFloatArrayType : ArrayTypeIO<Array<Float?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Float>) {
-        dest.writeFloatArray(value.toFloatArray())
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Float?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Float>? {
-        return source.createFloatArray()?.toTypedArray()
+    override fun createFromParcel(source: Parcel): Array<Float?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Float>) {
-        val floatArray = FloatArray(target.size)
-        source.readFloatArray(floatArray)
-        boxArrayConvert(target) {
-            floatArray[it]
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Float?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Float> {
-        return Array(length) { 0f }
+    override fun newInstance(length: Int): Array<Float?> {
+        return arrayOfNulls(length)
     }
 }
 
-class BoxDoubleArrayType : ArrayTypeIO<Array<Double>> {
+class BoxDoubleArrayType : ArrayTypeIO<Array<Double?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Double>) {
-        dest.writeDoubleArray(value.toDoubleArray())
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Double?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Double>? {
-        return source.createDoubleArray()?.toTypedArray()
+    override fun createFromParcel(source: Parcel): Array<Double?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Double>) {
-        val doubleArray = DoubleArray(target.size)
-        source.readDoubleArray(doubleArray)
-        boxArrayConvert(target) {
-            doubleArray[it]
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Double?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Double> {
-        return Array(length) { 0.0 }
+    override fun newInstance(length: Int): Array<Double?> {
+        return arrayOfNulls(length)
     }
 }
 
-class BoxBooleanArrayType : ArrayTypeIO<Array<Boolean>> {
+class BoxBooleanArrayType : ArrayTypeIO<Array<Boolean?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Boolean>) {
-        dest.writeBooleanArray(value.toBooleanArray())
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Boolean?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Boolean>? {
-        return source.createBooleanArray()?.toTypedArray()
+    override fun createFromParcel(source: Parcel): Array<Boolean?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Boolean>) {
-        val booleanArray = BooleanArray(target.size)
-        source.readBooleanArray(booleanArray)
-        boxArrayConvert(target) {
-            booleanArray[it]
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Boolean?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Boolean> {
-        return Array(length) { false }
+    override fun newInstance(length: Int): Array<Boolean?> {
+        return arrayOfNulls(length)
     }
 }
 
-class BoxCharArrayType : ArrayTypeIO<Array<Char>> {
+class BoxCharArrayType : ArrayTypeIO<Array<Char?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Char>) {
-        dest.writeCharArray(value.toCharArray())
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Char?>) {
+        dest.writeArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<Char>? {
-        return source.createCharArray()?.toTypedArray()
+    override fun createFromParcel(source: Parcel): Array<Char?>? {
+        return boxArrayConvert(source.readArray(javaClass.classLoader))
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<Char>) {
-        val charArray = CharArray(target.size)
-        source.readCharArray(charArray)
-        boxArrayConvert(target) {
-            charArray[it]
-        }
+    override fun syncValueFromParcel(source: Parcel, target: Array<Char?>) {
+        copyArray(createFromParcel(source), target)
     }
 
-    override fun newInstance(length: Int): Array<Char> {
-        return Array(length) { ' ' }
+    override fun newInstance(length: Int): Array<Char?> {
+        return arrayOfNulls(length)
     }
 }
 
-class StringType : TypeIO<String> {
+class StringType : TypeIO<String?> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: String) {
+    override fun writeToParcel(dest: Parcel, flags: Int, value: String?) {
         dest.writeString(value)
     }
 
@@ -504,28 +472,28 @@ class StringType : TypeIO<String> {
     }
 }
 
-class StringArrayType : ArrayTypeIO<Array<String>> {
+class StringArrayType : ArrayTypeIO<Array<String?>> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<String>) {
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<String?>) {
         dest.writeStringArray(value)
     }
 
-    override fun createFromParcel(source: Parcel): Array<String>? {
+    override fun createFromParcel(source: Parcel): Array<String?>? {
         return source.createStringArray()
     }
 
-    override fun readFromParcel(source: Parcel, target: Array<String>) {
+    override fun syncValueFromParcel(source: Parcel, target: Array<String?>) {
         source.readStringArray(target)
     }
 
-    override fun newInstance(length: Int): Array<String> {
-        return Array(length) { "" }
+    override fun newInstance(length: Int): Array<String?> {
+        return arrayOfNulls(length)
     }
 }
 
-class CharSequenceType : TypeIO<CharSequence> {
+class CharSequenceType : TypeIO<CharSequence?> {
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: CharSequence) {
+    override fun writeToParcel(dest: Parcel, flags: Int, value: CharSequence?) {
         TextUtils.writeToParcel(value, dest, 0)
     }
 
@@ -534,9 +502,29 @@ class CharSequenceType : TypeIO<CharSequence> {
     }
 }
 
-class CharSequenceArrayType : ArrayTypeIO<Array<CharSequence>> {
+class CharSequenceArrayType : ArrayTypeIO<Array<CharSequence?>> {
 
-    override fun readFromParcel(source: Parcel, target: Array<CharSequence>) {
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<CharSequence?>) {
+        val size = value.size
+        dest.writeInt(size)
+        for (i in 0 until size) {
+            TextUtils.writeToParcel(value[i], dest, 0)
+        }
+    }
+
+    override fun createFromParcel(source: Parcel): Array<CharSequence?>? {
+        val length = source.readInt()
+        var result: Array<CharSequence?>? = null
+        if (length > 0) {
+            result = newInstance(length)
+            for (i in 0 until length) {
+                result[i] = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source)
+            }
+        }
+        return result
+    }
+
+    override fun syncValueFromParcel(source: Parcel, target: Array<CharSequence?>) {
         val size = source.readInt()
         if (size == target.size) {
             for (i in 0 until size) {
@@ -547,27 +535,8 @@ class CharSequenceArrayType : ArrayTypeIO<Array<CharSequence>> {
         }
     }
 
-    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<CharSequence>) {
-        val size = value.size
-        dest.writeInt(size)
-        for (i in 0 until size) {
-            TextUtils.writeToParcel(value[i], dest, 0)
-        }
-    }
-
-    override fun createFromParcel(source: Parcel): Array<CharSequence>? {
-        val array = mutableListOf<CharSequence>()
-        val length = source.readInt()
-        if (length >= 0) {
-            for (i in 0 until length) {
-                array.add(i, TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source))
-            }
-        }
-        return array.toTypedArray()
-    }
-
-    override fun newInstance(length: Int): Array<CharSequence> {
-        return Array(length) { "" }
+    override fun newInstance(length: Int): Array<CharSequence?> {
+        return arrayOfNulls(length)
     }
 }
 
@@ -585,8 +554,8 @@ class ParcelableType : OutTypeIO<Parcelable> {
         return source.readParcelable(javaClass.classLoader)
     }
 
-    override fun readFromParcel(source: Parcel, target: Parcelable) {
-        if (target is ReadableParcelable) {
+    override fun syncValueFromParcel(source: Parcel, target: Parcelable) {
+        if (target is IReadableParcelable) {
             target.readFromParcel(source)
             return
         }
@@ -620,7 +589,7 @@ class ListType : OutTypeIO<MutableList<Any?>> {
         return source.readArrayList(javaClass.classLoader)
     }
 
-    override fun readFromParcel(source: Parcel, target: MutableList<Any?>) {
+    override fun syncValueFromParcel(source: Parcel, target: MutableList<Any?>) {
         val result = source.readArrayList(javaClass.classLoader)
         target.clear()
         result?.forEach {
@@ -639,7 +608,7 @@ class MapType : OutTypeIO<MutableMap<Any, Any?>> {
         return source.readHashMap(javaClass.classLoader)
     }
 
-    override fun readFromParcel(source: Parcel, target: MutableMap<Any, Any?>) {
+    override fun syncValueFromParcel(source: Parcel, target: MutableMap<Any, Any?>) {
         val result = source.readHashMap(javaClass.classLoader)
         target.clear()
         result?.forEach {

@@ -16,5 +16,5 @@ interface OutTypeIO<T> : TypeIO<T> {
      * @param source 源数据
      * @param target 要写入的数据
      */
-    fun readFromParcel(source: Parcel, target: T)
+    fun syncValueFromParcel(source: Parcel, target: T)
 }

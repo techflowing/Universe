@@ -34,6 +34,10 @@ class CallbackParameterWrapper : BaseParameterWrapper {
         parcel.writeString(className)
     }
 
+    override fun syncRemoteValueFromParcel(source: Parcel) {
+        TODO("Not yet implemented")
+    }
+
     override fun describeContents(): Int {
         return 0
     }

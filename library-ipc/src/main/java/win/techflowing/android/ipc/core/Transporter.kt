@@ -6,10 +6,7 @@ import win.techflowing.android.ipc.call.*
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.method.MethodExecutor
 import win.techflowing.android.ipc.method.MethodRequester
-import win.techflowing.android.ipc.parameter.type.TypeTable
-import win.techflowing.android.ipc.util.TypeUtil
 import java.lang.reflect.Method
-import java.util.*
 
 /**
  * 跨进程方法调用 Binder，运行于每一个进程内
@@ -77,9 +74,26 @@ class Transporter private constructor() : ITransporter.Stub() {
         }
     }
 
+    /**
+     * 反射调用目标类的方法
+     *
+     * @param request 请求信息
+     */
+    private fun invokeMethod(request: Request): Response {
+        var params: Array<Any?>? = null
+        request.getParameterWrapper()?.also { wrapperArray ->
+            params = Array(wrapperArray.size) { index ->
+                wrapperArray[index].getParam()
+            }
+        }
+        val methodExecutor = serviceMethodExecutorMap[request.getTargetClass()]?.get(request.getMethodName())
+            ?: return Response(StatusCode.NOT_FOUND, "The method '${request.getMethodName()}' you call was not exist!")
+        return methodExecutor.execute(params)
+    }
+
     override fun execute(request: Request?): Response {
         request?.also {
-            it.getArgsWrapper()?.forEach { wrapper ->
+            it.getParameterWrapper()?.forEach { wrapper ->
                 // TODO: 打印日志
                 Logger.d(TAG, "receive param, value :$wrapper")
                 Logger.d(TAG, "param type: ${wrapper.getType()}")
@@ -89,7 +103,7 @@ class Transporter private constructor() : ITransporter.Stub() {
                 TAG,
                 "receive request, target class: ${request.getTargetClass()}, method: ${request.getMethodName()}"
             )
-            // TODO: 请求
+            return invokeMethod(request)
         }
         return Response(StatusCode.BAD_REQUEST, "request info is null")
     }

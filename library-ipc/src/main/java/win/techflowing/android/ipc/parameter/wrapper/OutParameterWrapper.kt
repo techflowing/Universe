@@ -41,6 +41,10 @@ class OutParameterWrapper : BaseParameterWrapper {
         }
     }
 
+    override fun syncRemoteValueFromParcel(source: Parcel) {
+        TODO("Not yet implemented")
+    }
+
     override fun getType(): Int {
         return type
     }
