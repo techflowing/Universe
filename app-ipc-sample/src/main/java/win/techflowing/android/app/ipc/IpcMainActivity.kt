@@ -7,6 +7,7 @@ import android.widget.Button
 import win.techflowing.android.app.ipc.apple.AppleProcessActivity
 import win.techflowing.android.app.ipc.apple.AppleService
 import win.techflowing.android.app.ipc.apple.ParameterService
+import win.techflowing.android.app.ipc.apple.ParcelableModel
 import win.techflowing.android.app.ipc.banana.BananaProcessActivity
 import win.techflowing.android.app.ipc.banana.BananaService
 import win.techflowing.android.base.BaseActivity
@@ -70,6 +71,9 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.test_string_parameter -> {
                 stringTypeParamTransfer(service)
+            }
+            R.id.test_parcelable_parameter -> {
+                parcelableTypeParamTransfer(service)
             }
         }
     }
@@ -137,5 +141,17 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
         XLog.d(TAG, "远程方法调用完成后，数据处理后的结果")
         XLog.d(TAG, "String 类型数组：${stringArray.contentToString()}")
         XLog.d(TAG, "CharSequence 类型数组：${charSequenceArray.contentToString()}")
+    }
+
+    /**
+     * Parcelable 类型参数传递
+     */
+    private fun parcelableTypeParamTransfer(service: ParameterService) {
+        val model = ParcelableModel("Jerry", 18)
+        val modelArray = arrayOf(ParcelableModel("Tom", 28), ParcelableModel("Mark", 30))
+        service.parcelableType(model, modelArray)
+        XLog.d(TAG, "远程方法调用完成后，数据处理后的结果")
+        XLog.d(TAG, model.toString())
+        XLog.d(TAG, modelArray.contentToString())
     }
 }

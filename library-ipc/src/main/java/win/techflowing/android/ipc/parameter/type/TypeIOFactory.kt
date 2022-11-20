@@ -3,7 +3,7 @@ package win.techflowing.android.ipc.parameter.type
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
-import win.techflowing.android.ipc.IReadableParcelable
+import win.techflowing.android.ipc.IParcelableObject
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.util.ParcelableUtil
 import java.lang.reflect.InvocationTargetException
@@ -555,7 +555,7 @@ class ParcelableType : OutTypeIO<Parcelable> {
     }
 
     override fun syncValueFromParcel(source: Parcel, target: Parcelable) {
-        if (target is IReadableParcelable) {
+        if (target is IParcelableObject) {
             target.readFromParcel(source)
             return
         }
@@ -576,6 +576,44 @@ class ParcelableType : OutTypeIO<Parcelable> {
 
     companion object {
         private const val TAG = "ParcelableType"
+    }
+}
+
+class ParcelableArrayType : ArrayTypeIO<Array<Parcelable?>> {
+
+    override fun writeToParcel(dest: Parcel, flags: Int, value: Array<Parcelable?>) {
+        dest.writeString(value.javaClass.componentType.name)
+        dest.writeParcelableArray(value, flags)
+    }
+
+    override fun createFromParcel(source: Parcel): Array<Parcelable?>? {
+        val className = source.readString()
+        val size = source.readInt()
+        if (size < 0) {
+            return null
+        }
+        val clazz = Class.forName(className!!)
+        val array = java.lang.reflect.Array.newInstance(clazz, size) as Array<Parcelable?>
+        for (i in 0 until size) {
+            array[i] = source.readParcelable(clazz.classLoader)
+        }
+        return array
+    }
+
+    override fun syncValueFromParcel(source: Parcel, target: Array<Parcelable?>) {
+        source.readString()
+        val size = source.readInt()
+        if (size == target.size) {
+            for (index in 0 until size) {
+                target[index] = source.readParcelable(javaClass.classLoader)
+            }
+        } else {
+            throw IllegalStateException("bad array lengths")
+        }
+    }
+
+    override fun newInstance(length: Int): Array<Parcelable?> {
+        return arrayOfNulls(length)
     }
 }
 

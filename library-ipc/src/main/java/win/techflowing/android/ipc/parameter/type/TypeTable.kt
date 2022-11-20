@@ -57,6 +57,7 @@ enum class TypeTable(
 
     // Parcelable
     PARCELABLE(arrayOf(Parcelable::class.java), ParcelableType()),
+    PARCELABLE_ARRAY(arrayOf(Parcelable::class.java), ParcelableArrayType()),
 
     // 集合类
     LIST(arrayOf(MutableList::class.java), ListType()),
@@ -80,6 +81,12 @@ enum class TypeTable(
                 if (values()[index].classType.contains(classType)) {
                     return index
                 }
+            }
+            if (Parcelable::class.java.isAssignableFrom(classType)) {
+                return PARCELABLE.ordinal
+            }
+            if (Array<Parcelable>::class.java.isAssignableFrom(classType)) {
+                return PARCELABLE_ARRAY.ordinal
             }
             return EMPTY.ordinal
         }

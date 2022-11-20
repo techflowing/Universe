@@ -1,6 +1,6 @@
 package win.techflowing.android.app.ipc.apple
 
-import android.os.Parcelable
+import win.techflowing.android.ipc.annotation.InOut
 import win.techflowing.android.log.XLog
 
 /**
@@ -101,8 +101,14 @@ class ParameterServiceImpl : ParameterService {
         charSequenceArray[0] = null
     }
 
-    override fun parcelableType(parcelable: Parcelable) {
-        TODO("Not yet implemented")
+    override fun parcelableType(@InOut parcelable: ParcelableModel, @InOut parcelableArray: Array<ParcelableModel>) {
+        XLog.d(TAG, "接受到 Parcelable 类型参数方法调用")
+        XLog.d(TAG, parcelable.toString())
+        parcelable.setAge(20)
+        XLog.d(TAG, parcelableArray.contentToString())
+        parcelableArray.forEach {
+            it.setAge(it.getAge() + 10)
+        }
     }
 
     override fun collectType(list: List<String>, map: Map<String, String>) {

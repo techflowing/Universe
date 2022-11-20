@@ -1,6 +1,5 @@
 package win.techflowing.android.app.ipc.apple
 
-import android.os.Parcelable
 import win.techflowing.android.ipc.IRemoteService
 import win.techflowing.android.ipc.annotation.In
 import win.techflowing.android.ipc.annotation.InOut
@@ -53,7 +52,7 @@ interface ParameterService : IRemoteService {
         @InOut charSequenceArray: Array<CharSequence?>,
     )
 
-    fun parcelableType(parcelable: Parcelable)
+    fun parcelableType(@InOut parcelable: ParcelableModel, @InOut parcelableArray: Array<ParcelableModel>)
 
     fun collectType(@InOut list: List<String>, @InOut map: Map<String, String>)
 }

@@ -9,7 +9,7 @@ import android.os.Parcelable
  * @author techflowing@gmail.com
  * @since 2022/9/25 15:32
  */
-interface IReadableParcelable : Parcelable {
+interface IParcelableObject : Parcelable {
 
     /**
      * 读取 Parcel 中的内容
