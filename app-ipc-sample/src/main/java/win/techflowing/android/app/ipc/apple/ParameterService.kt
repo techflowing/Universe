@@ -54,5 +54,5 @@ interface ParameterService : IRemoteService {
 
     fun parcelableType(@InOut parcelable: ParcelableModel, @InOut parcelableArray: Array<ParcelableModel>)
 
-    fun collectType(@InOut list: List<String>, @InOut map: Map<String, String>)
+    fun collectType(@InOut list: MutableList<String>, @InOut map: Map<String, String>)
 }

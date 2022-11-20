@@ -75,6 +75,9 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
             R.id.test_parcelable_parameter -> {
                 parcelableTypeParamTransfer(service)
             }
+            R.id.test_collect_parameter -> {
+                collectionTypeParamTransfer(service)
+            }
         }
     }
 
@@ -153,5 +156,20 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
         XLog.d(TAG, "远程方法调用完成后，数据处理后的结果")
         XLog.d(TAG, model.toString())
         XLog.d(TAG, modelArray.contentToString())
+    }
+
+    /**
+     * 集合类参数类型传递
+     */
+    private fun collectionTypeParamTransfer(service: ParameterService) {
+        val list = mutableListOf("1", "2", "3")
+        val map = mutableMapOf(
+            "name" to "Tom",
+            "age" to "18"
+        )
+        service.collectType(list, map)
+        XLog.d(TAG, "远程方法调用完成后，数据处理后的结果")
+        XLog.d(TAG, list)
+        XLog.d(TAG, map)
     }
 }

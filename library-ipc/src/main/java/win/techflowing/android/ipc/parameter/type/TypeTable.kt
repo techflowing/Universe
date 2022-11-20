@@ -1,8 +1,6 @@
 package win.techflowing.android.ipc.parameter.type
 
 import android.os.Parcelable
-import win.techflowing.android.ipc.parameter.wrapper.BaseParameterWrapper
-import kotlin.math.E
 
 /**
  * Type 表，包含 flag 数字标识，Class 类型映射表，Parcelable读取/写入工具类
@@ -87,6 +85,12 @@ enum class TypeTable(
             }
             if (Array<Parcelable>::class.java.isAssignableFrom(classType)) {
                 return PARCELABLE_ARRAY.ordinal
+            }
+            if (MutableList::class.java.isAssignableFrom(classType)) {
+                return LIST.ordinal
+            }
+            if (MutableMap::class.java.isAssignableFrom(classType)) {
+                return MAP.ordinal
             }
             return EMPTY.ordinal
         }
