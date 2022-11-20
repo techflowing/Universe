@@ -80,5 +80,10 @@
             android:layout_marginTop="8dp"
             android:text="测试 Callback 参数类型" />
 
+        <Button
+            android:id="@+id/test_parameter_null"
+            style="@style/Theme.Universe.Button.List"
+            android:layout_marginTop="8dp"
+            android:text="测试参数为空" />
     </LinearLayout>
 </ScrollView>

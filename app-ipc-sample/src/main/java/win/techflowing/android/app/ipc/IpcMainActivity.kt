@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import win.techflowing.android.app.ipc.apple.*
 import win.techflowing.android.app.ipc.banana.BananaProcessActivity
 import win.techflowing.android.app.ipc.banana.BananaService
@@ -35,13 +36,13 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
 
         findViewById<Button>(R.id.get_apple_process_service).setOnClickListener {
             Tartarus.getRemoteService(AppleService::class.java)?.also {
-                XLog.e(TAG, "苹果进程服务结果：" + it.getAppleName())
+                Toast.makeText(this@IpcMainActivity, "苹果进程名称：" + it.getAppleName(), Toast.LENGTH_LONG).show()
             }
         }
 
         findViewById<Button>(R.id.get_banana_process_service).setOnClickListener {
             Tartarus.getRemoteService(BananaService::class.java)?.also {
-                XLog.e(TAG, "香蕉进程服务结果：" + it.getBananaName())
+                Toast.makeText(this@IpcMainActivity, "香蕉进程名称：" + it.getBananaName(), Toast.LENGTH_LONG).show()
                 XLog.e(TAG, it.hashCode())
             }
         }
@@ -54,6 +55,7 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
         findViewById<Button>(R.id.test_collect_parameter).setOnClickListener(this)
         findViewById<Button>(R.id.test_out_annotation_parameter).setOnClickListener(this)
         findViewById<Button>(R.id.test_callback_parameter).setOnClickListener(this)
+        findViewById<Button>(R.id.test_parameter_null).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -80,7 +82,18 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
             R.id.test_out_annotation_parameter -> {
                 outAnnotationTypeParamTransfer(service)
             }
+            R.id.test_parameter_null -> {
+                nullTypeParamTransfer(service)
+            }
         }
+    }
+
+    /**
+     * 空类型参数
+     */
+    private fun nullTypeParamTransfer(service: ParameterService) {
+        Toast.makeText(this@IpcMainActivity, "不支持空类型参数", Toast.LENGTH_LONG).show()
+        // service.nullParameter(null, null, null, null, null)
     }
 
     /**

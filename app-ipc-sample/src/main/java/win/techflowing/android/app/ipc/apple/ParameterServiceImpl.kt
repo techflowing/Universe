@@ -129,4 +129,19 @@ class ParameterServiceImpl : ParameterService {
         list.add("remote String 1")
         list.add("remote String 2")
     }
+
+    override fun nullParameter(
+        int: Int?,
+        intArray: Array<Int?>?,
+        string: String?,
+        parcelable: ParcelableModel?,
+        list: MutableList<String?>?
+    ) {
+        XLog.d(TAG, "接受到 空 类型参数方法调用")
+        XLog.d(TAG, int ?: "Int null")
+        XLog.d(TAG, intArray ?: "Int 数组 null")
+        XLog.d(TAG, string ?: "String null")
+        XLog.d(TAG, parcelable ?: "Parcelable null")
+        XLog.d(TAG, list ?: "List null")
+    }
 }

@@ -58,4 +58,12 @@ interface ParameterService : IRemoteService {
     fun collectType(@InOut list: MutableList<String>, @InOut map: Map<String, String>)
 
     fun outParameter(@Out intArray: Array<Int?>, @Out parcelable: ParcelableModel, @Out list: MutableList<String>)
+
+    fun nullParameter(
+        @In int: Int?,
+        @InOut intArray: Array<Int?>?,
+        @In string: String?,
+        @In parcelable: ParcelableModel?,
+        @InOut list: MutableList<String?>?
+    )
 }
