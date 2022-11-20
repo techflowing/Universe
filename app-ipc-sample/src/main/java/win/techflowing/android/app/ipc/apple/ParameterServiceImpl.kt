@@ -116,4 +116,17 @@ class ParameterServiceImpl : ParameterService {
         list.add("添加的元素")
         XLog.d(TAG, map)
     }
+
+    override fun outParameter(intArray: Array<Int?>, parcelable: ParcelableModel, list: MutableList<String>) {
+        XLog.d(TAG, "接受到 @Out 类型参数方法调用")
+        XLog.d(TAG, "数据：${intArray.contentToString()}")
+        XLog.d(TAG, "数据：$parcelable")
+        XLog.d(TAG, "数据：$list")
+        for (index in intArray.indices) {
+            intArray[index] = index * 100
+        }
+        parcelable.setAge(100)
+        list.add("remote String 1")
+        list.add("remote String 2")
+    }
 }

@@ -10,17 +10,17 @@ import win.techflowing.android.ipc.IParcelableObject
  * @author techflowing@gmail.com
  * @since 2022/11/19 23:31
  */
-class ParcelableModel : IParcelableObject {
+class ParcelableModel() : IParcelableObject {
 
     private var name: String? = null
     private var age: Int = 0
 
-    constructor(name: String?, age: Int) {
+    constructor(name: String?, age: Int) : this() {
         this.name = name
         this.age = age
     }
 
-    constructor(parcel: Parcel) {
+    constructor(parcel: Parcel) : this() {
         readFromParcel(parcel)
     }
 

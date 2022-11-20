@@ -2,8 +2,10 @@ package win.techflowing.android.ipc.parameter.wrapper
 
 import android.os.Parcel
 import android.os.Parcelable
+import win.techflowing.android.ipc.parameter.type.ArrayTypeIO
 import win.techflowing.android.ipc.parameter.type.OutTypeIO
 import win.techflowing.android.ipc.parameter.type.TypeTable
+import win.techflowing.android.ipc.util.TypeUtil
 
 /**
  * @Out 注解类型参数 包装器
@@ -23,26 +25,49 @@ class OutParameterWrapper : BaseParameterWrapper {
     }
 
     constructor(parcel: Parcel) {
-        // TODO: 待补充逻辑
+        type = parcel.readInt()
+        if (type == TypeTable.PARCELABLE.ordinal) {
+            parcel.readString()?.also {
+                param = TypeUtil.createObjFromClassName(it)
+            }
+        } else if (type == TypeTable.PARCELABLE_ARRAY.ordinal) {
+            val size = parcel.readInt()
+            parcel.readString()?.also {
+                param = TypeUtil.createArrayFromComponentType(it, size)
+            }
+        } else if (type == TypeTable.LIST.ordinal) {
+            param = mutableListOf<Any?>()
+        } else if (type == TypeTable.MAP.ordinal) {
+            param = mutableMapOf<Any, Any?>()
+        } else if (TypeTable.isArrayType(type)) {
+            val size = parcel.readInt()
+            val typeIO = TypeTable.getTypeIO(type) as ArrayTypeIO<Any?>
+            param = typeIO.newInstance(size)
+        }
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(type)
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeInt(type)
         val outType = TypeTable.getTypeIO(type) as OutTypeIO<Any?>
         if (flags == Parcelable.PARCELABLE_WRITE_RETURN_VALUE) {
-            outType.writeToParcel(parcel, flags, param)
+            outType.writeToParcel(dest, flags, param)
         } else {
             if (type == TypeTable.PARCELABLE.ordinal) {
-                parcel.writeString(param?.javaClass?.name)
+                dest.writeString(param?.javaClass?.name)
+            } else if (type == TypeTable.PARCELABLE_ARRAY.ordinal) {
+                dest.writeInt(java.lang.reflect.Array.getLength(param))
+                dest.writeString(param?.javaClass?.componentType?.name)
             } else if (TypeTable.isArrayType(type)) {
                 // 只写入长度
-                parcel.writeInt(java.lang.reflect.Array.getLength(param))
+                dest.writeInt(java.lang.reflect.Array.getLength(param))
             }
         }
     }
 
     override fun syncRemoteValueFromParcel(source: Parcel) {
-        TODO("Not yet implemented")
+        type = source.readInt()
+        val typeIO = TypeTable.getTypeIO(type) as OutTypeIO<Any?>
+        typeIO.syncValueFromParcel(source, param)
     }
 
     override fun getType(): Int {

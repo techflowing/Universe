@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import win.techflowing.android.app.ipc.apple.AppleProcessActivity
-import win.techflowing.android.app.ipc.apple.AppleService
-import win.techflowing.android.app.ipc.apple.ParameterService
-import win.techflowing.android.app.ipc.apple.ParcelableModel
+import win.techflowing.android.app.ipc.apple.*
 import win.techflowing.android.app.ipc.banana.BananaProcessActivity
 import win.techflowing.android.app.ipc.banana.BananaService
 import win.techflowing.android.base.BaseActivity
@@ -55,6 +52,8 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
         findViewById<Button>(R.id.test_string_parameter).setOnClickListener(this)
         findViewById<Button>(R.id.test_parcelable_parameter).setOnClickListener(this)
         findViewById<Button>(R.id.test_collect_parameter).setOnClickListener(this)
+        findViewById<Button>(R.id.test_out_annotation_parameter).setOnClickListener(this)
+        findViewById<Button>(R.id.test_callback_parameter).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -77,6 +76,9 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.test_collect_parameter -> {
                 collectionTypeParamTransfer(service)
+            }
+            R.id.test_out_annotation_parameter -> {
+                outAnnotationTypeParamTransfer(service)
             }
         }
     }
@@ -171,5 +173,21 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
         XLog.d(TAG, "远程方法调用完成后，数据处理后的结果")
         XLog.d(TAG, list)
         XLog.d(TAG, map)
+    }
+
+    /**
+     * @Out 注解参数类型
+     */
+    private fun outAnnotationTypeParamTransfer(service: ParameterService) {
+        val intArray = Array<Int?>(7) { it }
+        val model = ParcelableModel("Jerry", 18)
+        val list = mutableListOf("1", "2", "3")
+
+        service.outParameter(intArray, model, list)
+
+        XLog.d(TAG, "远程方法调用完成后，数据处理后的结果")
+        XLog.d(ParameterServiceImpl.TAG, "数据：${intArray.contentToString()}")
+        XLog.d(ParameterServiceImpl.TAG, "数据：$model")
+        XLog.d(ParameterServiceImpl.TAG, "数据：$list")
     }
 }

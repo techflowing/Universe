@@ -68,5 +68,17 @@
             android:layout_marginTop="8dp"
             android:text="测试集合类参数类型" />
 
+        <Button
+            android:id="@+id/test_out_annotation_parameter"
+            style="@style/Theme.Universe.Button.List"
+            android:layout_marginTop="8dp"
+            android:text="测试 @Out 注解参数类型" />
+
+        <Button
+            android:id="@+id/test_callback_parameter"
+            style="@style/Theme.Universe.Button.List"
+            android:layout_marginTop="8dp"
+            android:text="测试 Callback 参数类型" />
+
     </LinearLayout>
 </ScrollView>

@@ -3,6 +3,7 @@ package win.techflowing.android.app.ipc.apple
 import win.techflowing.android.ipc.IRemoteService
 import win.techflowing.android.ipc.annotation.In
 import win.techflowing.android.ipc.annotation.InOut
+import win.techflowing.android.ipc.annotation.Out
 
 /**
  * 参数测试服务
@@ -55,4 +56,6 @@ interface ParameterService : IRemoteService {
     fun parcelableType(@InOut parcelable: ParcelableModel, @InOut parcelableArray: Array<ParcelableModel>)
 
     fun collectType(@InOut list: MutableList<String>, @InOut map: Map<String, String>)
+
+    fun outParameter(@Out intArray: Array<Int?>, @Out parcelable: ParcelableModel, @Out list: MutableList<String>)
 }

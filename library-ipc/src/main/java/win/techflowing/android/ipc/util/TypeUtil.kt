@@ -20,6 +20,31 @@ import kotlin.String
  */
 object TypeUtil {
 
+    fun createArrayFromComponentType(componentType: String, length: Int): Any? {
+        var obj: Any? = null
+        try {
+            val clsType = Class.forName(componentType)
+            obj = Array.newInstance(clsType, length)
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+        }
+        return obj
+    }
+
+    fun createObjFromClassName(clsName: String): Any? {
+        var obj: Any? = null
+        try {
+            obj = Class.forName(clsName).newInstance()
+        } catch (e: InstantiationException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+        }
+        return obj
+    }
+
     /**
      * 当前参数类型是否只能使用 @in 注解
      *
