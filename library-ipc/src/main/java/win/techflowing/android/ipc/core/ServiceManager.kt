@@ -119,7 +119,9 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
         binder.linkToDeath({
             remoteTransporterMap.remove(serviceName)
         }, 0)
-        return ITransporter.Stub.asInterface(binder)
+        val transporter = ITransporter.Stub.asInterface(binder) ?: return null
+        transporter.registerCallback(CallbackTransporter.get())
+        return transporter
     }
 
     /**

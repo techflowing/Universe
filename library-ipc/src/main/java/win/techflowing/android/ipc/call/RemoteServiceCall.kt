@@ -15,7 +15,8 @@ import win.techflowing.android.ipc.parameter.wrapper.BaseParameterWrapper
 class RemoteServiceCall(
     private val transporter: ITransporter,
     private val methodRequester: MethodRequester,
-    private val args: Array<Any?>?
+    private val args: Array<Any?>?,
+    private val id: Int
 ) : Call<Any> {
 
     @Volatile
@@ -82,6 +83,7 @@ class RemoteServiceCall(
             return@Array paramsHandlers[index].wrapper(index, args?.get(index))
         }
         val request = Request(
+            id,
             methodRequester.getClassName(),
             methodRequester.getMethodName(),
             paramsWrapper,

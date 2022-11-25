@@ -3,12 +3,10 @@ package win.techflowing.android.ipc.aidl;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.IInterface;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.RemoteException;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import win.techflowing.android.ipc.call.Request;
 import win.techflowing.android.ipc.call.Response;
@@ -18,31 +16,10 @@ import win.techflowing.android.ipc.call.Response;
  */
 public interface ITransporter extends IInterface {
     /**
-     * Default implementation for ITransporter.
-     */
-    class Default implements ITransporter {
-        /**
-         * 执行请求
-         *
-         * @param request 请求信息
-         * @return 远程请求执行结果
-         */
-        @Override
-        public Response execute(@NonNull Request request) throws RemoteException {
-            return null;
-        }
-
-        @Override
-        public IBinder asBinder() {
-            return null;
-        }
-    }
-
-    /**
      * Local-side IPC implementation stub class.
      */
     abstract class Stub extends Binder implements ITransporter {
-        private static final java.lang.String DESCRIPTOR = "win.techflowing.android.ipc.aidl.ITransporter";
+        private static final String DESCRIPTOR = "win.techflowing.android.ipc.aidl.ITransporter";
 
         /**
          * Construct the stub at attach it to the interface.
@@ -107,6 +84,22 @@ public interface ITransporter extends IInterface {
                     }
                     return true;
                 }
+                case TRANSACTION_register: {
+                    data.enforceInterface(DESCRIPTOR);
+                    ICallback _arg0;
+                    _arg0 = ICallback.Stub.asInterface(data.readStrongBinder());
+                    this.registerCallback(_arg0);
+                    reply.writeNoException();
+                    return true;
+                }
+                case TRANSACTION_unRegister: {
+                    data.enforceInterface(DESCRIPTOR);
+                    ICallback _arg0;
+                    _arg0 = ICallback.Stub.asInterface(data.readStrongBinder());
+                    this.unregisterCallback(_arg0);
+                    reply.writeNoException();
+                    return true;
+                }
                 default: {
                     return super.onTransact(code, data, reply, flags);
                 }
@@ -126,7 +119,7 @@ public interface ITransporter extends IInterface {
                 return mRemote;
             }
 
-            public java.lang.String getInterfaceDescriptor() {
+            public String getInterfaceDescriptor() {
                 return DESCRIPTOR;
             }
 
@@ -171,9 +164,41 @@ public interface ITransporter extends IInterface {
                 }
                 return _result;
             }
+
+            @Override
+            public void registerCallback(ICallback callback) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(DESCRIPTOR);
+                    _data.writeStrongBinder((((callback != null)) ? (callback.asBinder()) : (null)));
+                    mRemote.transact(Stub.TRANSACTION_register, _data, _reply, 0);
+                    _reply.readException();
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            @Override
+            public void unregisterCallback(ICallback callback) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(DESCRIPTOR);
+                    _data.writeStrongBinder((((callback != null)) ? (callback.asBinder()) : (null)));
+                    mRemote.transact(Stub.TRANSACTION_unRegister, _data, _reply, 0);
+                    _reply.readException();
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
         }
 
         static final int TRANSACTION_execute = (IBinder.FIRST_CALL_TRANSACTION);
+        static final int TRANSACTION_register = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
+        static final int TRANSACTION_unRegister = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);
     }
 
     /**
@@ -183,4 +208,18 @@ public interface ITransporter extends IInterface {
      * @return 远程请求执行结果
      */
     Response execute(Request request) throws RemoteException;
+
+    /**
+     * 注册 Callback 传输 Binder
+     *
+     * @param callback Binder
+     */
+    void registerCallback(ICallback callback) throws RemoteException;
+
+    /**
+     * 反注册 Callback 传输 Binder
+     *
+     * @param callback Binder
+     */
+    void unregisterCallback(ICallback callback) throws RemoteException;
 }

@@ -11,32 +11,37 @@ import win.techflowing.android.ipc.parameter.wrapper.BaseParameterWrapper
  * @author techflowing@gmail.com
  * @since 2022/9/25 17:25
  */
-class Request : Parcelable, ISyncRemoteValue {
+open class Request : Parcelable, ISyncRemoteValue {
 
     private var targetClass: String? = null
     private var methodName: String? = null
     private var argsWrapper: Array<BaseParameterWrapper>? = null
     private var oneway: Boolean = false
+    private var id: Int = 0
 
     constructor(
+        id: Int,
         targetClass: String?,
         methodName: String?,
         argsWrapper: Array<BaseParameterWrapper>?,
-        oneway: Boolean
+        oneway: Boolean = false
     ) {
+        this.id = id
         this.targetClass = targetClass
         this.methodName = methodName
         this.argsWrapper = argsWrapper
         this.oneway = oneway
     }
 
-    private constructor(parcel: Parcel) {
+    constructor(parcel: Parcel) {
+        this.id = parcel.readInt()
         this.targetClass = parcel.readString()
         this.methodName = parcel.readString()
         this.argsWrapper = readParameterWrapperFromParcel(javaClass.classLoader!!, parcel)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
         parcel.writeString(targetClass)
         parcel.writeString(methodName)
         if (flags == Parcelable.PARCELABLE_WRITE_RETURN_VALUE) {
@@ -47,6 +52,7 @@ class Request : Parcelable, ISyncRemoteValue {
     }
 
     override fun syncRemoteValueFromParcel(source: Parcel) {
+        id = source.readInt()
         targetClass = source.readString()
         methodName = source.readString()
         readParameterFromParcel(source, argsWrapper)
@@ -70,6 +76,10 @@ class Request : Parcelable, ISyncRemoteValue {
 
     fun isOneway(): Boolean {
         return oneway
+    }
+
+    fun getId(): Int {
+        return id
     }
 
     /**

@@ -16,14 +16,14 @@ enum class TypeTable(
     EMPTY(arrayOf(), EmptyType()),
 
     // 8个基本类型，Kotlin 通过初始值来区分包装类、非包装类，这里统一使用包装类型
-    BYTE(arrayOf(Byte::class.javaPrimitiveType!!, Byte::class.java), ByteType()),
-    SHORT(arrayOf(Short::class.javaPrimitiveType!!, Short::class.java), ShortType()),
-    INT(arrayOf(Int::class.javaPrimitiveType!!, Int::class.java), IntType()),
-    LONG(arrayOf(Long::class.javaPrimitiveType!!, Long::class.java), LongType()),
-    FLOAT(arrayOf(Float::class.javaPrimitiveType!!, Float::class.java), FloatType()),
-    DOUBLE(arrayOf(Double::class.javaPrimitiveType!!, Double::class.java), DoubleType()),
-    BOOLEAN(arrayOf(Boolean::class.javaPrimitiveType!!, Boolean::class.java), BooleanType()),
-    CHAR(arrayOf(Char::class.javaPrimitiveType!!, Char::class.java), CharType()),
+    BYTE(arrayOf(Byte::class.javaObjectType, Byte::class.java), ByteType()),
+    SHORT(arrayOf(Short::class.javaObjectType, Short::class.java), ShortType()),
+    INT(arrayOf(Int::class.javaObjectType, Int::class.java), IntType()),
+    LONG(arrayOf(Long::class.javaObjectType, Long::class.java), LongType()),
+    FLOAT(arrayOf(Float::class.javaObjectType, Float::class.java), FloatType()),
+    DOUBLE(arrayOf(Double::class.javaObjectType, Double::class.java), DoubleType()),
+    BOOLEAN(arrayOf(Boolean::class.javaObjectType, Boolean::class.java), BooleanType()),
+    CHAR(arrayOf(Char::class.javaObjectType, Char::class.java), CharType()),
 
     // 8个基本类型的数组
     BYTE_ARRAY(arrayOf(ByteArray::class.java), ByteArrayType()),

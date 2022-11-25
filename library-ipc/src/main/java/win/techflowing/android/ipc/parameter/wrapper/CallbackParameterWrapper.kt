@@ -19,7 +19,7 @@ class CallbackParameterWrapper : BaseParameterWrapper {
     }
 
     constructor(parcel: Parcel) {
-        this.className = parcel.readString()
+        className = parcel.readString()
     }
 
     override fun getType(): Int {
@@ -35,11 +35,15 @@ class CallbackParameterWrapper : BaseParameterWrapper {
     }
 
     override fun syncRemoteValueFromParcel(source: Parcel) {
-        TODO("Not yet implemented")
+        className = source.readString()
     }
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    fun getCallbackClassName(): String? {
+        return className
     }
 
     companion object CREATOR : Parcelable.Creator<CallbackParameterWrapper> {

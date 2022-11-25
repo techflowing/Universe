@@ -4,6 +4,7 @@ import win.techflowing.android.ipc.IRemoteService
 import win.techflowing.android.ipc.annotation.In
 import win.techflowing.android.ipc.annotation.InOut
 import win.techflowing.android.ipc.annotation.Out
+import win.techflowing.android.ipc.annotation.RemoteCallback
 
 /**
  * 参数测试服务
@@ -58,6 +59,13 @@ interface ParameterService : IRemoteService {
     fun collectType(@InOut list: MutableList<String>, @InOut map: Map<String, String>)
 
     fun outParameter(@Out intArray: Array<Int?>, @Out parcelable: ParcelableModel, @Out list: MutableList<String>)
+
+    fun callbackParameter(
+        @In intArray: Array<Int?>,
+        @RemoteCallback calculateCallbackOne: CalculateCallback,
+        @RemoteCallback calculateCallbackTwo: CalculateCallback,
+        @RemoteCallback countCallback: CountCallback
+    )
 
     fun nullParameter(
         @In int: Int?,

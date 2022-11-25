@@ -82,9 +82,43 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
             R.id.test_out_annotation_parameter -> {
                 outAnnotationTypeParamTransfer(service)
             }
+            R.id.test_callback_parameter -> {
+                callbackTypeParamTransfer(service)
+            }
             R.id.test_parameter_null -> {
                 nullTypeParamTransfer(service)
             }
+        }
+    }
+
+    /**
+     * 回调参数测试
+     */
+    private fun callbackTypeParamTransfer(service: ParameterService) {
+        val intArray = Array<Int?>(5) { it + 1 }
+        for (index in 0 until 500) {
+            service.callbackParameter(intArray, object : CalculateCallback {
+                override fun sum(result: Int) {
+                    XLog.d(TAG, "远程方法调用完成后，收到CalculateCallbackOne求和结果：$result")
+                }
+
+                override fun multiplication(result: Int) {
+                    XLog.d(TAG, "远程方法调用完成后，收到CalculateCallbackOne求积结果：$result")
+                }
+            }, object : CalculateCallback {
+                override fun sum(result: Int) {
+                    XLog.d(TAG, "远程方法调用完成后，收到CalculateCallbackTwo求和结果：$result")
+                }
+
+                override fun multiplication(result: Int) {
+                    XLog.d(TAG, "远程方法调用完成后，收到CalculateCallbackTwo求积结果：$result")
+                }
+
+            }, object : CountCallback {
+                override fun count(result: Int) {
+                    XLog.d(TAG, "远程方法调用完成后，收到CountCallback统计个数结果：$result")
+                }
+            })
         }
     }
 

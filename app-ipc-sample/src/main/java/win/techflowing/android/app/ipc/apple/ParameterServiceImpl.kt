@@ -130,6 +130,25 @@ class ParameterServiceImpl : ParameterService {
         list.add("remote String 2")
     }
 
+    override fun callbackParameter(
+        intArray: Array<Int?>,
+        calculateCallbackOne: CalculateCallback,
+        calculateCallbackTwo: CalculateCallback,
+        countCallback: CountCallback
+    ) {
+        var sum = 0
+        var multiplication = 1
+        intArray.forEach {
+            sum += it ?: 0
+            multiplication *= it ?: 1
+        }
+        calculateCallbackOne.sum(sum)
+        calculateCallbackOne.multiplication(0)
+        calculateCallbackTwo.sum(0)
+        calculateCallbackTwo.multiplication(multiplication)
+        countCallback.count(intArray.count())
+    }
+
     override fun nullParameter(
         int: Int?,
         intArray: Array<Int?>?,

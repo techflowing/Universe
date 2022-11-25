@@ -114,7 +114,7 @@ class MethodRequester private constructor(
                 return DefaultParameterHandler(rawParameterClass)
             }
             for (annotation in annotations) {
-                if (annotation is Callback) {
+                if (annotation is RemoteCallback) {
                     return CallbackParameterHandler(rawParameterClass)
                 } else if (annotation is In || annotation is Out || annotation is InOut) {
                     return DirectionParameterHandler(annotation, rawParameterClass)

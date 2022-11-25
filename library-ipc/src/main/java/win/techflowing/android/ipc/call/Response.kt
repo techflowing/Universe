@@ -53,6 +53,10 @@ class Response : Parcelable {
         return result
     }
 
+    override fun toString(): String {
+        return "Response{ mStatusCode=$statusCode, mStatusMessage='$statusMessage', mResult=$result }"
+    }
+
     companion object CREATOR : Parcelable.Creator<Response> {
         override fun createFromParcel(parcel: Parcel): Response {
             return Response(parcel)
