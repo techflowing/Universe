@@ -1,6 +1,6 @@
 package win.techflowing.android.app.ipc.apple
 
-import win.techflowing.android.ipc.IRemoteService
+import win.techflowing.android.ipc.core.IRemoteService
 import win.techflowing.android.ipc.annotation.In
 import win.techflowing.android.ipc.annotation.InOut
 import win.techflowing.android.ipc.annotation.Out

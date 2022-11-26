@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import win.techflowing.android.ipc.call.adapter.CallAdapterFactory
+import win.techflowing.android.ipc.core.IRemoteService
 import win.techflowing.android.ipc.core.ServiceManager
 import win.techflowing.android.ipc.log.DefaultIpcLogger
 import win.techflowing.android.ipc.log.ILogger

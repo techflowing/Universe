@@ -2,7 +2,7 @@ package win.techflowing.android.app.ipc.apple
 
 import android.os.Parcel
 import android.os.Parcelable
-import win.techflowing.android.ipc.IParcelableObject
+import win.techflowing.android.ipc.core.IParcelableObject
 
 /**
  * Parcelable 数据

@@ -1,6 +1,6 @@
 package win.techflowing.android.app.ipc.banana
 
-import win.techflowing.android.ipc.IRemoteService
+import win.techflowing.android.ipc.core.IRemoteService
 
 /**
  * Apple Service

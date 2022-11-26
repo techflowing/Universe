@@ -2,8 +2,6 @@ package win.techflowing.android.ipc.core
 
 import android.os.Binder
 import android.os.RemoteCallbackList
-import win.techflowing.android.ipc.IRemoteCallback
-import win.techflowing.android.ipc.IRemoteService
 import win.techflowing.android.ipc.aidl.ICallback
 import win.techflowing.android.ipc.aidl.ITransporter
 import win.techflowing.android.ipc.annotation.RemoteCallback

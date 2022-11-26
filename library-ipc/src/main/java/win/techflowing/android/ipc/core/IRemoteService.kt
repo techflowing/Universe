@@ -1,4 +1,4 @@
-package win.techflowing.android.ipc
+package win.techflowing.android.ipc.core
 
 /**
  * Remote Service 接口标识，所有的远程接口都需要继承此接口

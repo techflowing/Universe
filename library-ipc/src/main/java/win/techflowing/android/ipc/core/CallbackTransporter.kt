@@ -1,6 +1,5 @@
 package win.techflowing.android.ipc.core
 
-import win.techflowing.android.ipc.IRemoteCallback
 import win.techflowing.android.ipc.aidl.ICallback
 import win.techflowing.android.ipc.annotation.RemoteCallback
 import win.techflowing.android.ipc.call.CallbackRequest

@@ -3,7 +3,7 @@ package win.techflowing.android.ipc.parameter.type
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
-import win.techflowing.android.ipc.IParcelableObject
+import win.techflowing.android.ipc.core.IParcelableObject
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.ipc.util.ParcelableUtil
 import java.lang.reflect.InvocationTargetException

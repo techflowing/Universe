@@ -1,6 +1,6 @@
 package win.techflowing.android.app.ipc.apple
 
-import win.techflowing.android.ipc.IRemoteCallback
+import win.techflowing.android.ipc.core.IRemoteCallback
 
 /**
  * 远程回调方法

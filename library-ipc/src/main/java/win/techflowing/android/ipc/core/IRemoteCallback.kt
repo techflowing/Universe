@@ -1,4 +1,4 @@
-package win.techflowing.android.ipc
+package win.techflowing.android.ipc.core
 
 /**
  * 远程回调接口，所有远程 Callback 参数类型都要继承此接口
