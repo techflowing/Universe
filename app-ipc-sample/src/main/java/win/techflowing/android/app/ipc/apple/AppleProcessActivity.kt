@@ -24,6 +24,10 @@ class AppleProcessActivity : BaseActivity() {
             Tartarus.registerRemoteService(AppleService::class.java, AppleServiceImpl())
         }
 
+        findViewById<Button>(R.id.test_unregister_service).setOnClickListener {
+            Tartarus.unregisterRemoteService(AppleService::class.java)
+        }
+
         findViewById<Button>(R.id.test_register_parameter_service).setOnClickListener {
             Tartarus.registerRemoteService(ParameterService::class.java, ParameterServiceImpl())
         }

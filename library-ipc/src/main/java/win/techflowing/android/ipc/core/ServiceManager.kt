@@ -55,6 +55,25 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
     }
 
     /**
+     * 反注册 Service
+     *
+     * @param SERVICE Service 类型
+     * @param service Service
+     */
+    fun <SERVICE : IRemoteService> unregisterRemoteService(service: Class<SERVICE>) {
+        // 先清除本地缓存
+        localServiceMap.remove(service)
+        initServiceDispatcherProxyLocked()
+        service.canonicalName?.also {
+            if (serviceDispatcherProxy != null) {
+                serviceDispatcherProxy?.unregisterService(it)
+            } else {
+                DispatcherProcessService.unregisterRemoteService(Tartarus.getContext(), it)
+            }
+        }
+    }
+
+    /**
      * 获取远程服务
      *
      * @param SERVICE 服务类型
@@ -91,7 +110,9 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
     }
 
     override fun unregisterService(serviceCanonicalName: String?) {
-        TODO("Not yet implemented")
+        serviceCanonicalName?.also {
+            remoteTransporterMap.remove(it)
+        }
     }
 
     /**

@@ -11,6 +11,12 @@
         android:text="注册 Apple 服务" />
 
     <Button
+        android:id="@+id/test_unregister_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="取消注册 Apple 服务" />
+
+    <Button
         android:id="@+id/test_register_parameter_service"
         style="@style/Theme.Universe.Button.List"
         android:layout_marginTop="8dp"

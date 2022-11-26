@@ -1,7 +1,9 @@
 package win.techflowing.android.ipc.core
 
 import android.os.IBinder
+import android.os.RemoteException
 import win.techflowing.android.ipc.IServiceDispatcher
+import win.techflowing.android.ipc.IServiceManager
 import win.techflowing.android.ipc.log.Logger
 
 /**
@@ -18,6 +20,7 @@ class ServiceDispatcher : IServiceDispatcher.Stub() {
     /** 服务分发进程的 Map，维护全部进程的 Service 信息 */
     private val remoteServiceMap = mutableMapOf<String, RemoteServiceInfo>()
 
+    @Synchronized
     override fun registerServiceManager(pid: Int, serviceManagerBinder: IBinder?) {
         serviceManagerBinder?.also {
             serviceManagerBinder.linkToDeath({
@@ -28,6 +31,7 @@ class ServiceDispatcher : IServiceDispatcher.Stub() {
         }
     }
 
+    @Synchronized
     override fun registerService(
         serviceCanonicalName: String,
         pid: Int,
@@ -44,14 +48,27 @@ class ServiceDispatcher : IServiceDispatcher.Stub() {
         }
     }
 
+    @Synchronized
     override fun getServiceTransporterBinder(serviceCanonicalName: String?): IBinder? {
         return remoteServiceMap[serviceCanonicalName]?.let {
             it.binder
         }
     }
 
+    @Synchronized
     override fun unregisterService(serviceCanonicalName: String?) {
-
+        remoteServiceMap.remove(serviceCanonicalName)
+        // 通知所有进程移除缓存
+        serviceManagerMap.forEach { entry ->
+            IServiceManager.Stub.asInterface(entry.value)?.also {
+                try {
+                    it.unregisterService(serviceCanonicalName)
+                } catch (e: RemoteException) {
+                    e.printStackTrace()
+                    Logger.e(TAG, "unregisterService exception: ${e.message}")
+                }
+            }
+        }
     }
 
     /**

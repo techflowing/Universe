@@ -91,6 +91,16 @@ object Tartarus {
     }
 
     /**
+     * 反注册 Service
+     *
+     * @param SERVICE Service 类型
+     * @param service Service
+     */
+    fun <SERVICE : IRemoteService> unregisterRemoteService(service: Class<SERVICE>) {
+        ServiceManager.get().unregisterRemoteService(service)
+    }
+
+    /**
      * 获取 Service
      *
      * @param SERVICE Service 类型

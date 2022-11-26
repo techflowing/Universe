@@ -2,8 +2,10 @@ package win.techflowing.android.app.ipc.banana;
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 
 import win.techflowing.android.app.ipc.R;
+import win.techflowing.android.app.ipc.apple.AppleService
 import win.techflowing.android.base.BaseActivity;
 import win.techflowing.android.ipc.Tartarus
 
@@ -21,6 +23,12 @@ class BananaProcessActivity : BaseActivity() {
 
         findViewById<Button>(R.id.test_register_service).setOnClickListener {
             Tartarus.registerRemoteService(BananaService::class.java, BananaServiceImpl())
+        }
+
+        findViewById<Button>(R.id.get_apple_process_service).setOnClickListener {
+            Tartarus.getRemoteService(AppleService::class.java)?.also {
+                Toast.makeText(this@BananaProcessActivity, "苹果进程名称：" + it.getAppleName(), Toast.LENGTH_LONG).show()
+            } ?: Toast.makeText(this@BananaProcessActivity, "苹果进程服务不存在", Toast.LENGTH_LONG).show()
         }
     }
 }

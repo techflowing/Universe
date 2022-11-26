@@ -37,7 +37,7 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
         findViewById<Button>(R.id.get_apple_process_service).setOnClickListener {
             Tartarus.getRemoteService(AppleService::class.java)?.also {
                 Toast.makeText(this@IpcMainActivity, "苹果进程名称：" + it.getAppleName(), Toast.LENGTH_LONG).show()
-            }
+            } ?: Toast.makeText(this@IpcMainActivity, "苹果进程服务不存在", Toast.LENGTH_LONG).show()
         }
 
         findViewById<Button>(R.id.get_banana_process_service).setOnClickListener {

@@ -10,4 +10,10 @@
         android:layout_marginTop="8dp"
         android:text="注册 Banana 服务" />
 
+    <Button
+        android:id="@+id/get_apple_process_service"
+        style="@style/Theme.Universe.Button.List"
+        android:layout_marginTop="8dp"
+        android:text="获取苹果进程服务" />
+
 </LinearLayout>

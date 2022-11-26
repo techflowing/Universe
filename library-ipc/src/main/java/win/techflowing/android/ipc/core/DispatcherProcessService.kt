@@ -34,7 +34,7 @@ class DispatcherProcessService : Service() {
                 registerRemoteService(intent)
             }
             ACTION_UNREGISTER_REMOTE_SERVICE -> {
-                // TODO:
+                unregisterRemoteService(intent)
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -72,6 +72,16 @@ class DispatcherProcessService : Service() {
             ServiceDispatcher.getInstance().registerService(serviceName, pid, processName, transporterBinder)
             ServiceDispatcher.getInstance().registerServiceManager(pid, serviceManagerBinder)
         }
+    }
+
+    /**
+     * 反注册 Service
+     *
+     * @param intent Intent
+     */
+    private fun unregisterRemoteService(intent: Intent) {
+        val serviceName = intent.getStringExtra(KEY_SERVICE_CANONICAL_NAME) ?: return
+        ServiceDispatcher.getInstance().unregisterService(serviceName)
     }
 
     companion object {
@@ -121,6 +131,22 @@ class DispatcherProcessService : Service() {
             intent.putExtra(KEY_REMOTE_TRANSPORTER_BINDER_WRAPPER, BinderWrapper(transporterBinder))
             intent.putExtra(KEY_PID, Process.myPid())
             intent.putExtra(KEY_PROCESS_NAME, ProcessUtil.getCurrentProcessName(context))
+            AndroidComponentUtil.safeStartService(context, intent)
+        }
+
+        /**
+         * 使用 startService 的方式反注册 Service
+         *
+         * @param context Context
+         * @param serviceName Service 名称
+         */
+        fun unregisterRemoteService(
+            context: Context,
+            serviceName: String
+        ) {
+            val intent = Intent(context, DispatcherProcessService::class.java)
+            intent.action = ACTION_UNREGISTER_REMOTE_SERVICE
+            intent.putExtra(KEY_SERVICE_CANONICAL_NAME, serviceName)
             AndroidComponentUtil.safeStartService(context, intent)
         }
     }
