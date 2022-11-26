@@ -1,9 +1,9 @@
 package win.techflowing.android.ipc.core
 
-import android.os.IBinder
 import android.os.RemoteException
-import win.techflowing.android.ipc.IServiceDispatcher
-import win.techflowing.android.ipc.IServiceManager
+import win.techflowing.android.ipc.aidl.IServiceDispatcher
+import win.techflowing.android.ipc.aidl.IServiceManager
+import win.techflowing.android.ipc.aidl.ITransporter
 import win.techflowing.android.ipc.log.Logger
 
 /**
@@ -15,19 +15,19 @@ import win.techflowing.android.ipc.log.Logger
 class ServiceDispatcher : IServiceDispatcher.Stub() {
 
     /** 维护所有进程的 ServiceManager Binder 代理对象 */
-    private val serviceManagerMap = mutableMapOf<Int, IBinder>()
+    private val serviceManagerMap = mutableMapOf<Int, IServiceManager>()
 
     /** 服务分发进程的 Map，维护全部进程的 Service 信息 */
     private val remoteServiceMap = mutableMapOf<String, RemoteServiceInfo>()
 
     @Synchronized
-    override fun registerServiceManager(pid: Int, serviceManagerBinder: IBinder?) {
-        serviceManagerBinder?.also {
-            serviceManagerBinder.linkToDeath({
+    override fun registerServiceManager(pid: Int, serviceManager: IServiceManager?) {
+        serviceManager?.also {
+            serviceManager.asBinder().linkToDeath({
                 Logger.i(TAG, "remote serviceManagerBinder binderDied")
                 serviceManagerMap.remove(pid)
             }, 0)
-            serviceManagerMap[pid] = serviceManagerBinder
+            serviceManagerMap[pid] = serviceManager
         }
     }
 
@@ -36,23 +36,21 @@ class ServiceDispatcher : IServiceDispatcher.Stub() {
         serviceCanonicalName: String,
         pid: Int,
         processName: String,
-        transporterBinder: IBinder?
+        transporter: ITransporter?
     ) {
-        transporterBinder?.also {
-            transporterBinder.linkToDeath({
+        transporter?.also {
+            transporter.asBinder().linkToDeath({
                 Logger.i(TAG, "remoteService transporterBinder binderDied")
                 remoteServiceMap.remove(serviceCanonicalName)
             }, 0)
             remoteServiceMap[serviceCanonicalName] =
-                RemoteServiceInfo(serviceCanonicalName, pid, processName, transporterBinder)
+                RemoteServiceInfo(serviceCanonicalName, pid, processName, transporter)
         }
     }
 
     @Synchronized
-    override fun getServiceTransporterBinder(serviceCanonicalName: String?): IBinder? {
-        return remoteServiceMap[serviceCanonicalName]?.let {
-            it.binder
-        }
+    override fun getServiceTransporterBinder(serviceCanonicalName: String?): ITransporter? {
+        return remoteServiceMap[serviceCanonicalName]?.transporter
     }
 
     @Synchronized
@@ -60,13 +58,11 @@ class ServiceDispatcher : IServiceDispatcher.Stub() {
         remoteServiceMap.remove(serviceCanonicalName)
         // 通知所有进程移除缓存
         serviceManagerMap.forEach { entry ->
-            IServiceManager.Stub.asInterface(entry.value)?.also {
-                try {
-                    it.unregisterService(serviceCanonicalName)
-                } catch (e: RemoteException) {
-                    e.printStackTrace()
-                    Logger.e(TAG, "unregisterService exception: ${e.message}")
-                }
+            try {
+                entry.value.unregisterService(serviceCanonicalName)
+            } catch (e: RemoteException) {
+                e.printStackTrace()
+                Logger.e(TAG, "unregisterService exception: ${e.message}")
             }
         }
     }
@@ -77,13 +73,13 @@ class ServiceDispatcher : IServiceDispatcher.Stub() {
      * @property name 服务名称
      * @property pid 服务所属进程号
      * @property processName 服务所属进程名
-     * @property binder 服务转发代理 Binder
+     * @property transporter 服务转发代理 Binder
      */
     data class RemoteServiceInfo(
         val name: String,
         val pid: Int,
         val processName: String,
-        val binder: IBinder
+        val transporter: ITransporter
     )
 
     companion object {

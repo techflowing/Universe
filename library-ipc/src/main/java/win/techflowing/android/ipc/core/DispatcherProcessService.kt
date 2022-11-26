@@ -5,7 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.Process
-import win.techflowing.android.ipc.IServiceManager
+import win.techflowing.android.ipc.aidl.IServiceManager
+import win.techflowing.android.ipc.aidl.ITransporter
 import win.techflowing.android.util.AndroidComponentUtil
 import win.techflowing.android.util.ProcessUtil
 
@@ -51,7 +52,7 @@ class DispatcherProcessService : Service() {
         val pid = intent.getIntExtra(KEY_PID, -1)
         if (pid > 0) {
             IServiceManager.Stub.asInterface(serviceManagerBinder)
-                ?.registerServiceDispatcher(ServiceDispatcher.getInstance().asBinder())
+                ?.registerServiceDispatcher(ServiceDispatcher.getInstance())
         }
     }
 
@@ -69,8 +70,10 @@ class DispatcherProcessService : Service() {
         val processName = intent.getStringExtra(KEY_PROCESS_NAME) ?: return
         val pid = intent.getIntExtra(KEY_PID, -1)
         if (pid > 0) {
-            ServiceDispatcher.getInstance().registerService(serviceName, pid, processName, transporterBinder)
-            ServiceDispatcher.getInstance().registerServiceManager(pid, serviceManagerBinder)
+            val transporter = ITransporter.Stub.asInterface(transporterBinder)
+            ServiceDispatcher.getInstance().registerService(serviceName, pid, processName, transporter)
+            val serviceManager = IServiceManager.Stub.asInterface(serviceManagerBinder)
+            ServiceDispatcher.getInstance().registerServiceManager(pid, serviceManager)
         }
     }
 

@@ -1,9 +1,10 @@
 package win.techflowing.android.ipc.core
 
-import android.os.IBinder
 import android.os.Process
 import android.os.RemoteException
 import win.techflowing.android.ipc.*
+import win.techflowing.android.ipc.aidl.IServiceDispatcher
+import win.techflowing.android.ipc.aidl.IServiceManager
 import win.techflowing.android.ipc.aidl.ITransporter
 import win.techflowing.android.ipc.log.Logger
 import win.techflowing.android.util.ProcessUtil
@@ -96,13 +97,13 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
         }
     }
 
-    override fun registerServiceDispatcher(serviceDispatcherBinder: IBinder?) {
-        serviceDispatcherBinder?.also {
-            it.linkToDeath({
+    override fun registerServiceDispatcher(serviceDispatcher: IServiceDispatcher?) {
+        serviceDispatcher?.also {
+            it.asBinder().linkToDeath({
                 Logger.i(TAG, "remote ServiceDispatcher binderDied")
                 serviceDispatcherProxy = null
             }, 0)
-            serviceDispatcherProxy = IServiceDispatcher.Stub.asInterface(it)
+            serviceDispatcherProxy = serviceDispatcher
             synchronized(lock) {
                 lock.notifyAll()
             }
@@ -136,11 +137,10 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
      */
     private fun getRemoteServiceTransporterBinder(serviceName: String): ITransporter? {
         initServiceDispatcherProxyLocked()
-        val binder = serviceDispatcherProxy?.getServiceTransporterBinder(serviceName) ?: return null
-        binder.linkToDeath({
+        val transporter = serviceDispatcherProxy?.getServiceTransporterBinder(serviceName) ?: return null
+        transporter.asBinder().linkToDeath({
             remoteTransporterMap.remove(serviceName)
         }, 0)
-        val transporter = ITransporter.Stub.asInterface(binder) ?: return null
         transporter.registerCallback(CallbackTransporter.get())
         return transporter
     }
@@ -178,7 +178,7 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
                 serviceName,
                 Process.myPid(),
                 processName,
-                Transporter.getInstance().asBinder()
+                Transporter.getInstance()
             )
         } catch (e: RemoteException) {
             Logger.e(TAG, "registerRemoteServiceByServiceDispatcherProxy exception", e)
@@ -230,7 +230,7 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
      */
     private fun registerServiceManagerToServiceDispatcher() {
         try {
-            serviceDispatcherProxy?.registerServiceManager(Process.myPid(), this.asBinder())
+            serviceDispatcherProxy?.registerServiceManager(Process.myPid(), this)
         } catch (e: RemoteException) {
             Logger.e(TAG, "向远程 ServiceDispatcher 注册 ServiceManager 异常", e)
         }
