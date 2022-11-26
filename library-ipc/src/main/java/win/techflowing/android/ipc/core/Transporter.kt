@@ -131,7 +131,7 @@ class Transporter private constructor() : ITransporter.Stub() {
                     if (!IRemoteCallback::class.java.isAssignableFrom(paramType)) {
                         throw IllegalArgumentException("callback parameter must implementation IRemoteCallback")
                     }
-                    callbackClassMap[paramType.simpleName] = paramType
+                    callbackClassMap[paramType.name] = paramType
                     break
                 }
             }
@@ -225,7 +225,7 @@ class Transporter private constructor() : ITransporter.Stub() {
                 try {
                     val request = createCallbackRequest(
                         requestId,
-                        callbackClass.simpleName,
+                        callbackClass.name,
                         callbackParamIndex,
                         method.name,
                         args

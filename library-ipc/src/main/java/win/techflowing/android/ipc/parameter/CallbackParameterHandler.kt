@@ -13,6 +13,6 @@ class CallbackParameterHandler(private val paramType: Class<*>) : ParameterHandl
 
     @Suppress("UNCHECKED_CAST")
     override fun <W : BaseParameterWrapper> wrapper(index: Int, value: Any?): W {
-        return CallbackParameterWrapper(paramType.simpleName) as W
+        return CallbackParameterWrapper(paramType.name) as W
     }
 }

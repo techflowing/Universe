@@ -17,7 +17,7 @@ class DefaultParameterHandler(var paramType: Class<*>) : ParameterHandler {
             return InParameterWrapper(value, paramType) as W
         } else {
             throw IllegalArgumentException(
-                "Parameter type '${paramType.simpleName}' can be an out type, so you must declare it as @In, @Out or @Inout."
+                "Parameter type '${paramType.canonicalName}' can be an out type, so you must declare it as @In, @Out or @Inout."
             )
         }
     }

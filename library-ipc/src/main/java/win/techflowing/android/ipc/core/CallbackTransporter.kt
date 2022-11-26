@@ -61,7 +61,7 @@ class CallbackTransporter private constructor() : ICallback.Stub() {
                 ConcurrentHashMap()
             }
             methodMap[method.name] = MethodExecutor(callbackObj, method)
-            map[callbackType.simpleName + index] = methodMap
+            map[callbackType.name + index] = methodMap
         }
     }
 
