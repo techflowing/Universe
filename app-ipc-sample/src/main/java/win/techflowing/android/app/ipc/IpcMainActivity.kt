@@ -10,6 +10,8 @@ import win.techflowing.android.app.ipc.banana.BananaProcessActivity
 import win.techflowing.android.app.ipc.banana.BananaService
 import win.techflowing.android.base.BaseActivity
 import win.techflowing.android.ipc.Tartarus
+import win.techflowing.android.ipc.call.Call
+import win.techflowing.android.ipc.call.Callback
 import win.techflowing.android.log.XLog
 
 /**
@@ -56,6 +58,7 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
         findViewById<Button>(R.id.test_out_annotation_parameter).setOnClickListener(this)
         findViewById<Button>(R.id.test_callback_parameter).setOnClickListener(this)
         findViewById<Button>(R.id.test_parameter_null).setOnClickListener(this)
+        findViewById<Button>(R.id.test_call_adapter).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -88,7 +91,23 @@ class IpcMainActivity : BaseActivity(), View.OnClickListener {
             R.id.test_parameter_null -> {
                 nullTypeParamTransfer(service)
             }
+            R.id.test_call_adapter -> {
+                callAdapterTest(service)
+            }
         }
+    }
+
+    private fun callAdapterTest(service: ParameterService) {
+        val startTime = System.currentTimeMillis()
+        service.remoteCalculate(100, 300).enqueue(object : Callback<Int> {
+            override fun onResponse(call: Call<Int>, response: Int?) {
+                XLog.d(TAG, "在 ${System.currentTimeMillis() - startTime} ms 后收到结果：$response")
+            }
+
+            override fun onFailure(call: Call<Int>, t: Throwable) {
+                XLog.e(TAG, "远程调用发生异常：${t.message}")
+            }
+        })
     }
 
     /**

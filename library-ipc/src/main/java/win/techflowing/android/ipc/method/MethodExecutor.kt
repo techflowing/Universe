@@ -1,5 +1,6 @@
 package win.techflowing.android.ipc.method
 
+import win.techflowing.android.ipc.call.Call
 import win.techflowing.android.ipc.call.Response
 import win.techflowing.android.ipc.call.StatusCode
 import java.lang.reflect.InvocationTargetException
@@ -24,6 +25,9 @@ class MethodExecutor(private val target: Any, private val method: Method) {
                 method.invoke(target)
             } else {
                 method.invoke(target, *args)
+            }
+            if (result is Call<*>) {
+                return Response(code, message, result.execute())
             }
             return Response(code, message, result)
         } catch (e: IllegalAccessException) {

@@ -85,5 +85,11 @@
             style="@style/Theme.Universe.Button.List"
             android:layout_marginTop="8dp"
             android:text="测试参数为空" />
+
+        <Button
+            android:id="@+id/test_call_adapter"
+            style="@style/Theme.Universe.Button.List"
+            android:layout_marginTop="8dp"
+            android:text="测试 Call 回调" />
     </LinearLayout>
 </ScrollView>

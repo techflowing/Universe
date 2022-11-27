@@ -15,7 +15,7 @@ class DefaultCallAdapterFactory : CallAdapterFactory() {
 
     override fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*> {
         return object : CallAdapter<Any> {
-            override fun adapt(call: Call<*>): Any? {
+            override fun adapt(call: Call<Any>): Any? {
                 val rawClass = TypeUtil.getRawClass(returnType)
                 var result = call.execute()
                 if (result == null) {

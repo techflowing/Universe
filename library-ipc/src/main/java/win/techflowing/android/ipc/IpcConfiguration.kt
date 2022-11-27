@@ -3,6 +3,7 @@ package win.techflowing.android.ipc
 import android.app.Application
 import android.content.Context
 import win.techflowing.android.ipc.call.adapter.CallAdapterFactory
+import win.techflowing.android.ipc.call.adapter.OriginalCallAdapterFactory
 import win.techflowing.android.ipc.log.ILogger
 
 /**
@@ -52,7 +53,7 @@ class IpcConfiguration internal constructor(private val builder: Builder) {
     class Builder(val application: Application) {
 
         var logger: ILogger? = null
-        val adapterFactoryList = mutableListOf<CallAdapterFactory>()
+        val adapterFactoryList = mutableListOf<CallAdapterFactory>(OriginalCallAdapterFactory())
 
         fun logger(logger: ILogger) = apply {
             this.logger = logger

@@ -5,6 +5,7 @@ import win.techflowing.android.ipc.annotation.In
 import win.techflowing.android.ipc.annotation.InOut
 import win.techflowing.android.ipc.annotation.Out
 import win.techflowing.android.ipc.annotation.RemoteCallback
+import win.techflowing.android.ipc.call.Call
 
 /**
  * 参数测试服务
@@ -74,4 +75,6 @@ interface ParameterService : IRemoteService {
         @In parcelable: ParcelableModel?,
         @InOut list: MutableList<String?>?
     )
+
+    fun remoteCalculate(intOne: Int, intTwo: Int): Call<Int>
 }

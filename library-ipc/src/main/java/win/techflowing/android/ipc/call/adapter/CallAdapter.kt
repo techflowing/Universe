@@ -15,5 +15,5 @@ interface CallAdapter<R> {
     /**
      * Returns an instance of `T` which delegates to `call`.
      */
-    fun adapt(call: Call<*>): R?
+    fun adapt(call: Call<Any>): R?
 }

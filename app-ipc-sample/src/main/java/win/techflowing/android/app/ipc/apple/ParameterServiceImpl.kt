@@ -1,5 +1,7 @@
 package win.techflowing.android.app.ipc.apple
 
+import win.techflowing.android.ipc.call.Call
+import win.techflowing.android.ipc.call.adapter.CallWrapper
 import win.techflowing.android.log.XLog
 
 /**
@@ -162,5 +164,16 @@ class ParameterServiceImpl : ParameterService {
         XLog.d(TAG, string ?: "String null")
         XLog.d(TAG, parcelable ?: "Parcelable null")
         XLog.d(TAG, list ?: "List null")
+    }
+
+    override fun remoteCalculate(intOne: Int, intTwo: Int): Call<Int> {
+        XLog.d(TAG, "接受到 Call 类型方法调用")
+        XLog.d(TAG, "当前线程名：${Thread.currentThread().name}")
+        try {
+            Thread.sleep(3000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        return CallWrapper(intOne + intTwo)
     }
 }
