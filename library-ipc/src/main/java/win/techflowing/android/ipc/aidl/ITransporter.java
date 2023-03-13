@@ -108,7 +108,7 @@ public interface ITransporter extends IInterface {
 
         private static class Proxy implements ITransporter {
 
-            private IBinder mRemote;
+            private final IBinder mRemote;
 
             Proxy(IBinder remote) {
                 mRemote = remote;

@@ -8,6 +8,4 @@ import win.techflowing.android.plugin.common.BaseExtension
  * @author techflowing@gmail.com
  * @since 2022/5/29 9:21 下午
  */
-open class PluginExtension : BaseExtension() {
-
-}
+open class PluginExtension : BaseExtension()

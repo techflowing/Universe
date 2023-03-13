@@ -8,4 +8,4 @@ package win.techflowing.android.ipc.annotation
  */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class RemoteCallback()
+annotation class RemoteCallback

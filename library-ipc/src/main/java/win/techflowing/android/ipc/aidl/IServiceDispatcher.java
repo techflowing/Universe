@@ -102,7 +102,7 @@ public interface IServiceDispatcher extends IInterface {
 
         private static class Proxy implements IServiceDispatcher {
 
-            private IBinder mRemote;
+            private final IBinder mRemote;
 
             Proxy(IBinder remote) {
                 mRemote = remote;

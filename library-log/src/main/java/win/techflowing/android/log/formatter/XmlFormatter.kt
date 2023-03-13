@@ -6,5 +6,4 @@ package win.techflowing.android.log.formatter
  * @author techflowing@gmail.com
  * @since 2022/5/19 12:14 上午
  */
-interface XmlFormatter : Formatter<String> {
-}
+interface XmlFormatter : Formatter<String>

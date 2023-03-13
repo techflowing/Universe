@@ -6,6 +6,4 @@ package win.techflowing.android.util
  * @author techflowing@gmail.com
  * @since 2022/5/13 11:09 下午
  */
-object RegexUtil {
-
-}
+object RegexUtil

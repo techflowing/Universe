@@ -9,5 +9,4 @@ import androidx.fragment.app.Fragment
  * @version 1.0.0
  * @since 2022/5/14 10:56 下午
  */
-open class BaseFragment : Fragment() {
-}
+open class BaseFragment : Fragment()

@@ -67,7 +67,7 @@ object Tartarus {
      * @return 日志打印器
      */
     fun getLogger(): ILogger {
-        return configuration.getLogger() ?: defaultLogger;
+        return configuration.getLogger() ?: defaultLogger
     }
 
     /**

@@ -6,5 +6,4 @@ package win.techflowing.service.manager
  * @author techflowing@gmail.com
  * @since 2022/6/4 10:33 下午
  */
-interface IService {
-}
+interface IService

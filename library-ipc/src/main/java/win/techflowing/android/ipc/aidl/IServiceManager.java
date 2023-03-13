@@ -75,7 +75,7 @@ public interface IServiceManager extends IInterface {
         }
 
         private static class Proxy implements IServiceManager {
-            private IBinder mRemote;
+            private final IBinder mRemote;
 
             Proxy(IBinder remote) {
                 mRemote = remote;

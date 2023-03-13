@@ -6,4 +6,4 @@ package win.techflowing.android.ipc.annotation
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class OneWay()
+annotation class OneWay

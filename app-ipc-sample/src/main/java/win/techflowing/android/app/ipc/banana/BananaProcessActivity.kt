@@ -1,12 +1,12 @@
-package win.techflowing.android.app.ipc.banana;
+package win.techflowing.android.app.ipc.banana
 
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 
-import win.techflowing.android.app.ipc.R;
+import win.techflowing.android.app.ipc.R
 import win.techflowing.android.app.ipc.apple.AppleService
-import win.techflowing.android.base.BaseActivity;
+import win.techflowing.android.base.BaseActivity
 import win.techflowing.android.ipc.Tartarus
 
 /**

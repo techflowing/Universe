@@ -6,5 +6,4 @@ package win.techflowing.android.ipc.core
  * @author techflowing@gmail.com
  * @since 2022/9/25 17:05
  */
-interface IRemoteService {
-}
+interface IRemoteService

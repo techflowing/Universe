@@ -15,9 +15,7 @@ class Response : Parcelable {
     private var statusMessage: String? = null
     private var result: Any? = null
 
-    constructor(statusCode: Int, statusMessage: String) : this(statusCode, statusMessage, null) {
-
-    }
+    constructor(statusCode: Int, statusMessage: String) : this(statusCode, statusMessage, null)
 
     constructor(statusCode: Int, statusMessage: String, result: Any?) {
         this.statusCode = statusCode

@@ -11,7 +11,4 @@ import android.app.Application
  */
 class LogSampleApplication : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-    }
 }

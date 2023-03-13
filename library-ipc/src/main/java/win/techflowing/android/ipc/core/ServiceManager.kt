@@ -210,7 +210,7 @@ class ServiceManager private constructor() : IServiceManager.Stub() {
                 return
             }
             // 通过 startService 的方式通知 ServiceDispatcher 注册 Binder 对象到本进程
-            DispatcherProcessService.notifyRegisterServiceDispatcher(context, this.asBinder());
+            DispatcherProcessService.notifyRegisterServiceDispatcher(context, this.asBinder())
             synchronized(lock) {
                 if (serviceDispatcherProxy != null) {
                     return

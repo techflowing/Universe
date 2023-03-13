@@ -12,9 +12,7 @@ import android.os.Parcelable
  */
 class BinderWrapper(private val binder: IBinder) : Parcelable {
 
-    constructor(parcel: Parcel) : this(parcel.readStrongBinder()) {
-
-    }
+    constructor(parcel: Parcel) : this(parcel.readStrongBinder())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeStrongBinder(binder)

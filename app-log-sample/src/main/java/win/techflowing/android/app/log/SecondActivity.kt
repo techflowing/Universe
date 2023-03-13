@@ -8,5 +8,4 @@ import win.techflowing.android.base.BaseActivity
  * @author techflowing@gmail.com
  * @since 2022/5/23 11:56 下午
  */
-class SecondActivity : BaseActivity() {
-}
+class SecondActivity : BaseActivity()

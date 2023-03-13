@@ -17,9 +17,7 @@ import java.util.concurrent.Executor
  */
 class OriginalCallAdapterFactory(private val callbackExecutor: Executor) : CallAdapterFactory() {
 
-    constructor() : this(MainThreadExecutor()) {
-
-    }
+    constructor() : this(MainThreadExecutor())
 
     override fun get(returnType: Type, annotations: Array<Annotation>): CallAdapter<*>? {
         if (TypeUtil.getRawClass(returnType) != Call::class.java) {

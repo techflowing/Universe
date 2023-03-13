@@ -6,6 +6,4 @@ package win.techflowing.android.thread
  * @author techflowing@gmail.com
  * @since 2023/3/13 23:14
  */
-object XThread {
-
-}
+object XThread

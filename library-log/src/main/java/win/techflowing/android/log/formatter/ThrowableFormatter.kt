@@ -6,5 +6,4 @@ package win.techflowing.android.log.formatter
  * @author techflowing@gmail.com
  * @since 2022/5/19 10:05 下午
  */
-interface ThrowableFormatter : Formatter<Throwable> {
-}
+interface ThrowableFormatter : Formatter<Throwable>

@@ -6,5 +6,4 @@ package win.techflowing.android.ipc.core
  * @author techflowing@gmail.com
  * @since 2022/11/23 23:12
  */
-interface IRemoteCallback {
-}
+interface IRemoteCallback

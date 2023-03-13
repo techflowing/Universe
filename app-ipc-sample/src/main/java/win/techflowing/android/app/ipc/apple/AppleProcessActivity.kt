@@ -1,11 +1,11 @@
-package win.techflowing.android.app.ipc.apple;
+package win.techflowing.android.app.ipc.apple
 
 
 import android.os.Bundle
 import android.widget.Button
 
-import win.techflowing.android.app.ipc.R;
-import win.techflowing.android.base.BaseActivity;
+import win.techflowing.android.app.ipc.R
+import win.techflowing.android.base.BaseActivity
 import win.techflowing.android.ipc.Tartarus
 
 /**

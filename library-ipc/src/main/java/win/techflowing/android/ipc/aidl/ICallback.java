@@ -83,7 +83,7 @@ public interface ICallback extends IInterface {
 
         private static class Proxy implements ICallback {
 
-            private IBinder mRemote;
+            private final IBinder mRemote;
 
             Proxy(IBinder remote) {
                 mRemote = remote;

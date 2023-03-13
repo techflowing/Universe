@@ -22,10 +22,6 @@ class DispatcherProcessService : Service() {
         throw UnsupportedOperationException("Not yet implemented")
     }
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_REGISTER_SERVICE_DISPATCHER -> {
