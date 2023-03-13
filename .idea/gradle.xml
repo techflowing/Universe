@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/library-ipc" />
             <option value="$PROJECT_DIR$/library-log" />
             <option value="$PROJECT_DIR$/library-service-manager" />
+            <option value="$PROJECT_DIR$/library-thread" />
             <option value="$PROJECT_DIR$/library-ui" />
             <option value="$PROJECT_DIR$/library-util" />
             <option value="$PROJECT_DIR$/module-base" />
